@@ -1,0 +1,105 @@
+
+* GIT
+
+1. git init
+Initializes a new Git repository in the current directory.
+
+2. git clone <repository-url>
+Creates a copy of a remote repository on your local machine.
+
+3. git status
+Displays the current state of your working directory and staging area, showing changes that are staged, unstaged, and untracked.
+
+4. git add <file> / git add .
+Adds changes in the specified file to the staging area.
+git add . adds all changed files in the current directory and subdirectories.
+
+git add <file>
+git add .
+
+5. git commit -m "<message>"
+Commits staged changes to the repository with a descriptive message.
+
+6. git push origin <branch-name>
+Pushes committed changes to the remote repository. You often need to specify the branch and remote.
+
+7. git pull origin <branch-name>
+Fetches changes from the remote repository and merges them into your current branch.
+
+8. git branch <new-branch-name>
+Lists all local branches in the repository.
+
+9. git checkout
+Switches to an existing branch:
+git checkout <branch-name>
+
+To create a new branch and switch to it:
+git checkout -b <new-branch-name>
+
+10. git merge <branch-name>
+Merges the specified branch into the current branch.
+
+11. git log
+Shows the commit history of the current branch.
+
+12. git diff
+Shows the differences between the working directory and the staging area.
+
+13. git remote -v
+Lists all remote repositories linked to your local repository.
+
+14. git fetch
+Retrieves updates from the remote repository but doesn’t merge them into your current branch.
+
+15. git reset <file>
+Unstages a file that was added to the staging area.
+
+16. git rm <file>
+Removes a file from both the working directory and the staging area.
+
+17. git stash
+Temporarily stores changes that are not ready to commit.
+git stash
+
+To apply the stashed changes:
+git stash apply
+
+18. git tag -a <tag-name> -m "Tag message"
+Creates a tag for a specific commit (often used for releases).
+
+19. git rebase <branch-name>
+Reapplies commits from one branch onto another, useful for keeping a clean history.
+
+20. git remote add origin <repository-url>
+Adds a remote repository (usually for pushing to GitHub, GitLab, etc.).
+
+
+* PYTHON
+python3 --version
+brew info python
+brew install python@3.13
+python3 -m ensurepip
+
+
+* Merge git branch with main
+    git checkout main  # Switch to main
+    git pull origin main  # Ensure it's up to date
+    git merge <branch-name>
+    git push origin main
+
+* keep your changes, commit them before rebasing
+    git add .
+    git commit -m "commit message"
+    git pull --rebase origin main
+    git push origin main
+
+* Rebase
+    git checkout <branch-name>
+    git rebase main     # updates your current branch with the latest changes from the main branch
+    git push origin <branch-name>
+
+* Discard Changes as you don't want to keep them
+    git reset --hard
+    git rebase origin/main
+
+
