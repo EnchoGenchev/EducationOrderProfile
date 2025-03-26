@@ -1,4 +1,3 @@
-# Workflow to deploy React App from 'frontend/' folder to GitHub Pages
 name: CD/ Deploy React App to GitHub Pages
 
 on:
@@ -41,14 +40,19 @@ jobs:
           cd frontend
           npm run build
 
+      # OPTIONAL: Verify that profile.html exists in the 'dist' folder
+      - name: Verify profile.html exists
+        run: |
+          cd frontend/dist
+          ls -l profile.html  # Lists the file if it exists;  errors otherwise
+
       - name: Setup GitHub Pages
         uses: actions/configure-pages@v5
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: frontend/dist
-
+          path: frontend/dist # Upload the 'dist' folder
 
       - name: Deploy to GitHub Pages
         id: deployment
