@@ -7,10 +7,10 @@ export default defineConfig({
   plugins: [react()],
   build: {
     outDir: 'dist', // Output directory for build files
+    emptyOutDir: true, // Ensures the outDir is emptied on each build.  Important!
     rollupOptions: {
       input: {
-        main: resolve(__dirname, 'public/index.html'),
-        profile: resolve(__dirname, 'public/profile.html'),
+        main: resolve(__dirname, 'public/index.html'), // Corrected path, relative to root
       },
     },
   },
