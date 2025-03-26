@@ -1,0 +1,13 @@
+
+# README.md
+# installation.md
+
+# docs: some supporting documents such as git commands
+
+# backend folder
+
+# frontend folder
+
+# .vscode folder: contains settings of VSCode
+
+# .github folder: create workflows for CI/CD using Github Actions
