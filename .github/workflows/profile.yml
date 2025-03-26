@@ -1,19 +1,55 @@
-name: Deploy to GitHub Pages
+# Workflow to deploy React App from 'frontend/' folder to GitHub Pages
+name: CD/ Deploy React App to GitHub Pages
 
 on:
   push:
-    branches: [ main ] # Change to your main branch if it's not "main"
-  workflow_dispatch: # Allows you to manually trigger the workflow
+    branches: ["main"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
 
 jobs:
   deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
         with:
-          fetch-depth: 0  # Important for proper deployment
+          node-version: 18  # Use your Node.js version
+
+      - name: Install dependencies
+        run: |
+          cd frontend
+          npm install
+
+      - name: Build React app
+        run: |
+          cd frontend
+          npm run build
+
+      - name: Setup GitHub Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: frontend/dist
+
 
       - name: Deploy to GitHub Pages
-        uses: JamesIves/github-pages-deploy-action@v4
-        with:
-          folder: .   # The folder where your website's files are (usually the root)
+        id: deployment
+        uses: actions/deploy-pages@v4
