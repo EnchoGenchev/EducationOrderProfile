@@ -1,3 +1,4 @@
+# Workflow to deploy React App from 'frontend/' folder to GitHub Pages
 name: CD/ Deploy React App to GitHub Pages
 
 on:
@@ -28,25 +29,17 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: 18
+          node-version: 18  # Use your Node.js version
 
       - name: Install dependencies
         run: |
           cd frontend
           npm install
 
-      - name: Fix permissions
-        run: |
-          cd frontend
-          chmod +x node_modules/.bin/vite
-
       - name: Build React app
         run: |
           cd frontend
-          npx vite build
-
-      - name: Debug Build Output
-        run: ls -l frontend/dist
+          npm run build
 
       - name: Setup GitHub Pages
         uses: actions/configure-pages@v5
@@ -56,7 +49,7 @@ jobs:
         with:
           path: frontend/dist
 
+
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
-
