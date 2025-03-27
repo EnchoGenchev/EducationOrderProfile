@@ -46,7 +46,32 @@
       color: white; /* White text on pink background */
       padding: 10px;
       border-radius: 5px;
+      position: relative; /* Required for absolute positioning of the button */
     }
+
+    /* Edit Button Styling */
+    #editButton {
+      position: absolute;
+      top: 10px; /* Adjust as needed */
+      right: 10px; /* Adjust as needed */
+      font-size: 0.8em; /* Smaller font size */
+      padding: 5px 10px; /* Smaller padding */
+      background-color: #5233ff; /* Updated blue background */
+      color: white; /* White text */
+      border-radius: 3px;
+      border: none; /* Remove border */
+      cursor: pointer;
+    }
+
+    /* Save Button Styling */
+    #saveButton {
+      background-color: #5233ff; /* Updated blue background */
+      color: white; /* White text */
+      border-radius: 3px;
+      border: none; /* Remove border */
+      cursor: pointer;
+    }
+
 
     button {
       border: none;
@@ -210,6 +235,54 @@
       display: none; /* Hide the file input */
     }
 
+    /* Subject Interest Section */
+    .subject-interest-container {
+      width: 100%;
+      margin-bottom: 20px;
+      border: 1px dashed #ccc;
+      padding: 10px;
+      min-height: 50px; /* Make sure it's visible even when empty */
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+    }
+
+    .subject-block {
+      background-color: #5233ff; /* Updated blue background */
+      color: white;
+      padding: 5px 10px;
+      border-radius: 3px;
+      cursor: grab;
+      user-select: none;
+    }
+
+    .subject-options {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+      margin-bottom: 10px;
+      display: none; /* Hide subject options initially */
+    }
+
+    .subject-options .subject-block {
+      background-color: #5233ff; /* Updated blue background */
+      color: white;
+      cursor: grab;
+    }
+
+    .subject-interest-label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+      color: #ff33f6;
+      background-color: #ff33f6; /* Pink background for label */
+      color: white; /* White text on pink background */
+      padding: 5px;
+      border-radius: 3px;
+      width: 100%;
+      text-align: center;
+    }
+
     /* Dark mode adjustments - not active by default */
     @media (prefers-color-scheme: dark) {
       :root {
@@ -255,7 +328,9 @@
 </head>
 <body>
 <div id="root">
-  <h1>Profile Editor</h1>
+  <h1>Profile
+    <button id="editButton">Edit Profile</button>
+  </h1>
 
   <div class="profile-container">
     <div class="profile-picture-container">
@@ -275,7 +350,31 @@
       <textarea id="description" name="description" disabled>Write something about yourself...</textarea>
     </div>
 
-    <button id="editButton">Edit Profile</button>
+
+    <div class="input-group">
+      <label class="subject-interest-label">Subject Interests:</label>
+      <div class="subject-options" id="subjectOptions">
+        <div class="subject-block" draggable="true" data-subject="Mathematics">Mathematics</div>
+        <div class="subject-block" draggable="true" data-subject="Science">Science</div>
+        <div class="subject-block" draggable="true" data-subject="History">History</div>
+        <div class="subject-block" draggable="true" data-subject="Literature">Literature</div>
+        <div class="subject-block" draggable="true" data-subject="Computer Science">Computer Science</div>
+        <div class="subject-block" draggable="true" data-subject="Art">Art</div>
+        <div class="subject-block" draggable="true" data-subject="Music">Music</div>
+        <div class="subject-block" draggable="true" data-subject="Economics">Economics</div>
+        <div class="subject-block" draggable="true" data-subject="Philosophy">Philosophy</div>
+        <div class="subject-block" draggable="true" data-subject="Psychology">Psychology</div>
+        <div class="subject-block" draggable="true" data-subject="Sociology">Sociology</div>
+        <div class="subject-block" draggable="true" data-subject="Political Science">Political Science</div>
+        <div class="subject-block" draggable="true" data-subject="Engineering">Engineering</div>
+        <div class="subject-block" draggable="true" data-subject="Medicine">Medicine</div>
+        <div class="subject-block" draggable="true" data-subject="Law">Law</div>
+      </div>
+      <div class="subject-interest-container" id="subjectInterestContainer">
+        <!-- Existing Subject Blocks Will Go Here -->
+      </div>
+    </div>
+
     <button id="saveButton" style="display: none;">Save Changes</button> <!-- Initially hidden -->
   </div>
 </div>
@@ -289,10 +388,19 @@
   const profilePictureInput = document.getElementById('profilePictureInput');
   const profilePictureContainer = document.querySelector('.profile-picture-container');
   const profilePictureOverlay = document.querySelector('.profile-picture-overlay');
+  const subjectOptions = document.getElementById('subjectOptions');
+  const subjectInterestContainer = document.getElementById('subjectInterestContainer');
+
+  let isEditing = false; // Track editing state
+
+  //Initialize saved interests
+  let savedInterests = [];
 
   editButton.addEventListener('click', () => {
+    isEditing = true;
     usernameInput.disabled = false;
     descriptionTextarea.disabled = false;
+    subjectOptions.style.display = 'flex';
 
     //Force Text to be visible on edit
     usernameInput.style.color = "black";
@@ -304,11 +412,16 @@
     // Enable drag and drop and programmatic click on edit
     profilePictureContainer.addEventListener('click', triggerFileInput);
     profilePictureContainer.classList.add('editable');
+
+    // Enable dragging on subject options
+    enableSubjectDragging();
   });
 
   saveButton.addEventListener('click', () => {
+    isEditing = false;
     usernameInput.disabled = true;
     descriptionTextarea.disabled = true;
+    subjectOptions.style.display = 'none';
 
     //Force Text to be invisible on save
     usernameInput.style.color = "black";
@@ -323,6 +436,11 @@
 
     // In a real application, you would now save the changes to a server or local storage.
     alert('Changes saved!');
+
+    //Disable dragging
+    disableSubjectDragging();
+    //Save all dragged elements
+    savedInterests = Array.from(subjectInterestContainer.children).map(item => item.dataset.subject);
   });
 
   function triggerFileInput() {
@@ -382,6 +500,98 @@
       reader.readAsDataURL(file); // Read the file as a data URL
     }
   }
+
+  // Subject Interest Drag and Drop
+  let draggedSubject = null;
+
+  function enableSubjectDragging() {
+    const subjectBlocks = document.querySelectorAll('.subject-block');
+    subjectBlocks.forEach(block => {
+      block.draggable = true;
+      block.addEventListener('dragstart', dragStart);
+      block.addEventListener('dragend', dragEnd);
+    });
+
+    subjectInterestContainer.addEventListener('dragover', dragOver);
+    subjectInterestContainer.addEventListener('drop', drop);
+    subjectInterestContainer.addEventListener('dragenter', dragEnter);
+    subjectInterestContainer.addEventListener('dragleave', dragLeave);
+    subjectOptions.addEventListener('dragover', dragOver);
+    subjectOptions.addEventListener('drop', drop);
+    subjectOptions.addEventListener('dragenter', dragEnter);
+    subjectOptions.addEventListener('dragleave', dragLeave);
+  }
+
+  function disableSubjectDragging() {
+    const subjectBlocks = document.querySelectorAll('.subject-block');
+    subjectBlocks.forEach(block => {
+      block.draggable = false;
+      block.removeEventListener('dragstart', dragStart);
+      block.removeEventListener('dragend', dragEnd);
+    });
+    subjectInterestContainer.removeEventListener('dragover', dragOver);
+    subjectInterestContainer.removeEventListener('drop', drop);
+    subjectInterestContainer.removeEventListener('dragenter', dragEnter);
+    subjectInterestContainer.removeEventListener('dragleave', dragLeave);
+    subjectOptions.removeEventListener('dragover', dragOver);
+    subjectOptions.addEventListener('drop', drop);
+    subjectOptions.addEventListener('dragenter', dragEnter);
+    subjectOptions.addEventListener('dragleave', dragLeave);
+  }
+
+  function dragStart(event) {
+    draggedSubject = event.target;
+    event.dataTransfer.setData('text', event.target.dataset.subject);
+    event.target.classList.add('dragging');
+  }
+
+  function dragEnd(event) {
+    event.target.classList.remove('dragging');
+    draggedSubject = null;
+  }
+
+  function dragOver(event) {
+    event.preventDefault();
+  }
+
+  function dragEnter(event) {
+    event.preventDefault();
+    event.target.classList.add('drag-over');
+  }
+
+  function dragLeave(event) {
+    event.target.classList.remove('drag-over');
+  }
+
+  function drop(event) {
+    event.preventDefault();
+    event.target.classList.remove('drag-over');
+    const data = event.dataTransfer.getData('text');
+    const droppedSubject = document.querySelector(`.subject-block[data-subject="${data}"]`);
+
+    if (event.target === subjectInterestContainer) {
+      // Move to interest container
+      if (droppedSubject && !subjectInterestContainer.contains(droppedSubject)) {
+        subjectInterestContainer.appendChild(droppedSubject);
+      }
+    } else if (event.target === subjectOptions) {
+      //Move to subject container
+      if (droppedSubject && !subjectOptions.contains(droppedSubject)) {
+        subjectOptions.appendChild(droppedSubject);
+      }
+    }
+  }
+
+  //Set Initial List
+  window.onload = () => {
+    savedInterests.forEach(interest => {
+      const block = document.querySelector(`.subject-block[data-subject="${interest}"]`);
+      if(block && !subjectInterestContainer.contains(block)){
+        subjectInterestContainer.appendChild(block);
+      }
+    })
+  }
+
 </script>
 </body>
 </html>
