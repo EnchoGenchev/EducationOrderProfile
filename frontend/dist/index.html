@@ -418,6 +418,39 @@
   });
 
   saveButton.addEventListener('click', () => {
+    const username = usernameInput.value;
+    const description = descriptionTextarea.value;
+    let isValid = true;
+    let errorMessage = "";
+
+    // Username validation
+    const specialCharRegex = /[!@#$%^&*()+\-=\[\]{};':"\\|,.<>\/?\s]/; // Regex to check for special characters
+
+    if (specialCharRegex.test(username)) {
+      isValid = false;
+      errorMessage += "Username should not contain special characters.  ";
+      usernameInput.style.color = "red";
+    } else {
+      usernameInput.style.color = "black"; //reset color in case of previous error
+    }
+
+    // Description validation
+    const wordCount = description.split(/\s+/).filter(Boolean).length; // splits on whitespace and counts words (filters out empty strings)
+    if (wordCount > 75) {
+      isValid = false;
+      errorMessage += "Description should be 75 words or less.";
+      descriptionTextarea.style.color = "red";
+    } else {
+      descriptionTextarea.style.color = "black"; //reset color in case of previous error
+    }
+
+    if (!isValid) {
+      alert(errorMessage);  // Display the error message
+      return; // Prevent saving if validation fails
+    }
+
+    // If validation passes, proceed with saving
+
     isEditing = false;
     usernameInput.disabled = true;
     descriptionTextarea.disabled = true;
@@ -435,6 +468,11 @@
     profilePictureContainer.classList.remove('editable');
 
     // In a real application, you would now save the changes to a server or local storage.
+    // Here, you would also pass the validated username and description to the save function.
+
+    // Example of where you would use the validated values:
+    // saveProfileData(username, description, savedInterests);
+
     alert('Changes saved!');
 
     //Disable dragging
