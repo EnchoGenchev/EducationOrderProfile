@@ -5,8 +5,8 @@
     <link rel="icon" type="image/svg+xml" href="./vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Education | Connect with Expert Educators</title>
-    <meta name="description" content="Connect with qualified educators for personalized learning in Math, English, Spanish, Chinese, and more. Secure, flexible, and affordable." />
-    <link rel="stylesheet" type="text/css" href="style.css" />
+    <meta name="description" content="Connect with qualified educators for personalized learning in Math, English, Spanish, Chinese, and more. Secure, flexible, and affordable." />
+    <link rel="stylesheet" crossorigin href="/EducationOrder/assets/index-BMgYQfVR.css">
   </head>
   <body>
     <div class="container">
@@ -15,10 +15,10 @@
         <p>Connect with Expert Educators for Personalized Learning!</p>
       </header>
 
-      <!-- profile button -->
-      <a href="/profile">
-        <button class="top-right-btn">Go to Profile</button>
-      </a>
+      <!-- navigation links -->
+      <nav>
+        <a href="#profile" aria-label="Go to user profile">Profile</a>
+      </nav>
       
       <section id="about">
         <h2>About Education Order</h2>
@@ -150,7 +150,13 @@
             messagesDiv.removeChild(loadingMessage);
             // Assume the API returns generated content within the "candidates" array.
             // Adjust based on the official response structure.
-            const generatedText = data.candidates && data.candidates.length > 0 ? data.candidates[0].output : "No response received.";
+            const generatedText = data.candidates && data.candidates.length > 0 && 
+                data.candidates[0].content && 
+                data.candidates[0].content.parts &&
+                data.candidates[0].content.parts.length > 0
+                ? data.candidates[0].content.parts[0].text
+                : "No response received.";
+            // Display AI response
             const botMessage = document.createElement('div');
             botMessage.style.textAlign = 'left';
             botMessage.style.margin = '5px';
@@ -174,5 +180,25 @@
         }
       });
     </script>
+
+
+    <script>
+      // Simple hash router
+      function navigate() {
+          const hash = window.location.hash.substring(1); // Remove the '#'
+
+          if (hash === 'profile') {
+              window.location.href = '/EducationOrder/profile/';
+          } else {
+              // Default: Show main content (e.g., hide profile)
+          }
+      }
+
+      // Call on load and on hash change
+      window.onload = navigate;
+      window.addEventListener('hashchange', navigate);
+    </script>
+
+
   </body>
 </html>

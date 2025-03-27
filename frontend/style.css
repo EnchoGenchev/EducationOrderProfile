@@ -107,23 +107,30 @@ body {
     background-color: #a8e026;
   }
   
-  /* Style for the button in top-right corner */
-.top-right-btn {
-  position: fixed;
-  top: 20px;
-  right: 20px;
-  background-color: #4CAF50;
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  font-size: 16px;
-  border-radius: 5px;
-  cursor: pointer;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  text-decoration: none; /* Ensure no underlining */
-  display: inline-block; /* Align the button properly */
-}
-
-.top-right-btn:hover {
-  background-color: #45a049;
-}
+  
+  nav {
+    position: absolute;
+    top: 20px; 
+    right: 20px; 
+  }
+  
+  nav a {
+    color: white;
+    text-decoration: none;
+    padding: 10px 20px; 
+    font-size: 1.2em; 
+    background-color:  #262fd9; 
+    border: none; 
+    border-radius: 5px;
+  }
+  
+  nav a:hover {
+    text-decoration: none; 
+    background-color: #a8e026; 
+    color: white; 
+  }
+  
+  nav a:focus {
+    outline: none;
+    box-shadow: 0 0 5px #333dff;
+  }

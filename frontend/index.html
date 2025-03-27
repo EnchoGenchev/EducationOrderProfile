@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="./vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Education | Connect with Expert Educators</title>
+    <meta name="description" content="Connect with qualified educators for personalized learning in Math, English, Spanish, Chinese, and more. Secure, flexible, and affordable." />
+    <link rel="stylesheet" type="text/css" href="style.css" />
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <h1>Education Order</h1>
+        <p>Connect with Expert Educators for Personalized Learning!</p>
+      </header>
+
+      <!-- navigation links -->
+      <nav>
+        <a href="#profile" aria-label="Go to user profile">Profile</a>
+      </nav>
+      
+      <section id="about">
+        <h2>About Education Order</h2>
+        <p>Education Order is a revolutionary platform connecting students with qualified educators for personalized learning experiences. Founded with the mission to make quality education accessible to all, we provide a secure environment where learners can engage in one-on-one conversations with expert tutors.</p>
+        <p>Our platform supports a wide range of subjects including Mathematics, Physics, English, Spanish, Chinese, and many more. We believe in the power of personalized education and aim to create meaningful connections between students and educators from around the world.</p>
+        
+        <div>
+          <h3>Our Mission</h3>
+          <p>To democratize access to quality education by creating a secure, flexible, and affordable learning platform that connects students with qualified educators from diverse backgrounds and specialties.</p>
+        </div>
+        
+        <div>
+          <h3>Our Vision</h3>
+          <p>A world where quality education is accessible to everyone, regardless of geographical location or economic status, empowering individuals to achieve their full potential through personalized learning experiences.</p>
+        </div>
+      </section>
+      
+      <section id="features">
+        <h2>Key Features</h2>
+        
+        <div class="feature">
+          <h3>AI-Powered Chatbot Assistant</h3>
+          <p>Our intelligent chatbot helps users navigate the platform, find appropriate tutors, and get instant answers to common questions. The chatbot uses natural language processing to understand user queries and provide relevant information about our services, pricing, and educator qualifications.</p>
+        </div>
+        
+        <div class="feature">
+          <h3>Educator Verification System</h3>
+          <p>All educators on our platform undergo a rigorous verification process to ensure they have the qualifications they claim. This includes verification of degrees, certifications, and teaching experience. Students can feel confident that they're learning from qualified professionals.</p>
+        </div>
+        
+        <div class="feature">
+          <h3>Seamless Booking System</h3>
+          <p>Our intuitive booking system allows students to schedule sessions with their preferred educators based on availability. The platform handles time zone differences automatically, ensuring both parties are clear about session timing.</p>
+        </div>
+        
+        <div class="feature">
+          <h3>Secure Payment Processing</h3>
+          <p>Education Order uses a secure escrow payment system. Funds are held safely until sessions are completed, protecting both students and educators. This ensures fair compensation for teachers and satisfaction guarantees for students.</p>
+        </div>
+      </section>
+      
+      <section id="testimonials">
+        <h2>What Our Users Say</h2>
+        
+        <div class="feature">
+          <p>"Education Order transformed my learning experience. The one-on-one sessions with qualified tutors helped me master complex math concepts that I struggled with for years."</p>
+          <strong>— Sarah J., Student</strong>
+        </div>
+        
+        <div class="feature">
+          <p>"As an educator, this platform has allowed me to reach students globally and share my expertise while earning a fair income. The verification process ensures that only qualified teachers are on the platform."</p>
+          <strong>— Dr. Michael T., Mathematics Professor</strong>
+        </div>
+      </section>
+      
+      <section id="cta">
+        <h2>Ready to Get Started?</h2>
+        <p>Join Education Order today to connect with expert educators and transform your learning experience!</p>
+        <p>Visit our <a href="https://github.com/kathy20316/EducationOrder">GitHub repository</a> to learn more about the project.</p>
+      </section>
+      
+      <footer>
+        <p>&copy; 2025 Education Order. All rights reserved.</p>
+        <p>Contact: support@educationorder.com</p>
+      </footer>
+    </div>
+    
+    <p style="text-align: center; margin-top: 20px; color: #666;">
+      <small>Note: This is a static preview. To see the full interactive application, please run the development server.</small>
+    </p>
+
+    <!-- Chatbot Widget -->
+    <div id="chatbot">
+      <div id="chatbot-header">Chat with us!</div>
+      <div id="chatbot-body">
+        <div id="chatbot-messages"></div>
+        <div id="chatbot-input-container">
+          <input type="text" id="chatbot-input" placeholder="Type your question..." />
+          <button id="chatbot-send">Send</button>
+        </div>
+      </div>
+    </div>
+    
+    <script>
+      // Toggle chatbot window
+      document.getElementById('chatbot-header').addEventListener('click', function() {
+        var chatbotBody = document.getElementById('chatbot-body');
+        chatbotBody.style.display = (chatbotBody.style.display === 'none' || chatbotBody.style.display === '') ? 'block' : 'none';
+      });
+
+      // Integrate Google Gemini AI via API
+      document.getElementById('chatbot-send').addEventListener('click', function() {
+        const inputField = document.getElementById('chatbot-input');
+        const userInput = inputField.value.trim();
+        if (userInput !== "") {
+          const messagesDiv = document.getElementById('chatbot-messages');
+
+          // Append the user's message
+          const userMessage = document.createElement('div');
+          userMessage.style.textAlign = 'right';
+          userMessage.style.margin = '5px';
+          userMessage.innerHTML = '<strong>You:</strong> ' + userInput;
+          messagesDiv.appendChild(userMessage);
+
+          // Append a temporary loading message
+          const loadingMessage = document.createElement('div');
+          loadingMessage.style.textAlign = 'left';
+          loadingMessage.style.margin = '5px';
+          loadingMessage.innerHTML = '<strong>Bot:</strong> ...';
+          messagesDiv.appendChild(loadingMessage);
+          messagesDiv.scrollTop = messagesDiv.scrollHeight;
+
+          // Prepare payload per Gemini documentation
+          const payload = {
+            contents: [{
+              parts: [{ text: userInput }]
+            }]
+          };
+
+          // Use the Gemini endpoint with your API key.
+          fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=AIzaSyBimdkgUh-ooOc6RTchwk-bOCsQ5jed0x0', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+          })
+          .then(response => response.json())
+          .then(data => {
+            // Remove the loading message
+            messagesDiv.removeChild(loadingMessage);
+            // Assume the API returns generated content within the "candidates" array.
+            // Adjust based on the official response structure.
+            const generatedText = data.candidates && data.candidates.length > 0 && 
+                data.candidates[0].content && 
+                data.candidates[0].content.parts &&
+                data.candidates[0].content.parts.length > 0
+                ? data.candidates[0].content.parts[0].text
+                : "No response received.";
+            // Display AI response
+            const botMessage = document.createElement('div');
+            botMessage.style.textAlign = 'left';
+            botMessage.style.margin = '5px';
+            botMessage.innerHTML = '<strong>Bot:</strong> ' + generatedText;
+            messagesDiv.appendChild(botMessage);
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+          })
+          .catch(error => {
+            messagesDiv.removeChild(loadingMessage);
+            const errorMessage = document.createElement('div');
+            errorMessage.style.textAlign = 'left';
+            errorMessage.style.margin = '5px';
+            errorMessage.innerHTML = '<strong>Bot:</strong> Sorry, an error occurred. Please try again.';
+            messagesDiv.appendChild(errorMessage);
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+            console.error('Error:', error);
+          });
+
+          // Clear the input field.
+          inputField.value = '';
+        }
+      });
+    </script>
+
+
+    <script>
+      // Simple hash router
+      function navigate() {
+          const hash = window.location.hash.substring(1); // Remove the '#'
+
+          if (hash === 'profile') {
+              window.location.href = '/EducationOrder/profile/';
+          } else {
+              // Default: Show main content (e.g., hide profile)
+          }
+      }
+
+      // Call on load and on hash change
+      window.onload = navigate;
+      window.addEventListener('hashchange', navigate);
+    </script>
+
+
+  </body>
+</html>
