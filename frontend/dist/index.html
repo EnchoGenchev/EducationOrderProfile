@@ -1,209 +1,635 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Education | Connect with Expert Educators</title>
-  <meta name="description"
-    content="Connect with qualified educators for personalized learning in Math, English, Spanish, Chinese, and more. Secure, flexible, and affordable." />
+  <title>Profile Editor</title>
+  <style>
+    :root {
+      font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+      line-height: 1.5;
+      font-weight: 400;
 
-  <link rel="stylesheet" crossorigin href="/EducationOrder/assets/index-DEOhDDxR.css">
+      color-scheme: light dark;
+      color: black; /* Default text color */
+      background-color: white;
+
+      font-synthesis: none;
+      text-rendering: optimizeLegibility;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      -webkit-text-size-adjust: 100%;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-width: 320px;
+      min-height: 100vh;
+      padding: 20px; /* Add some padding around the content */
+    }
+
+    h1 {
+      font-size: 2.2em;
+      line-height: 1.1;
+      margin-bottom: 20px; /* Add some space below the title */
+      background-color: #ff33f6; /* Pink background for header */
+      color: white; /* White text on pink background */
+      padding: 10px;
+      border-radius: 5px;
+      position: relative; /* Required for absolute positioning of the button */
+    }
+
+    /* Edit Button Styling */
+    #editButton {
+      position: absolute;
+      top: 10px; /* Adjust as needed */
+      right: 10px; /* Adjust as needed */
+      font-size: 0.8em; /* Smaller font size */
+      padding: 5px 10px; /* Smaller padding */
+      background-color: #5233ff; /* Updated blue background */
+      color: white; /* White text */
+      border-radius: 3px;
+      border: none; /* Remove border */
+      cursor: pointer;
+    }
+
+    /* Save Button Styling */
+    #saveButton {
+      background-color: #5233ff; /* Updated blue background */
+      color: white; /* White text */
+      border-radius: 3px;
+      border: none; /* Remove border */
+      cursor: pointer;
+    }
+
+
+    button {
+      border: none;
+      font-size: 1em;
+      font-weight: 500;
+      font-family: inherit;
+      cursor: pointer;
+      transition: all 0.25s;
+      background-color: #f0f0f0; /* Light grey button background */
+      padding: 10px 20px;
+      border-radius: 5px;
+      margin-top: 10px; /*Added to create separation*/
+    }
+
+    button:focus,
+    button:focus-visible {
+      outline: 4px auto -webkit-focus-ring-color;
+    }
+
+    a {
+      font-weight: 500;
+      color: #ff33f6; /* Keep link color pink */
+      text-decoration: inherit;
+    }
+
+    a:hover {
+      color: #d02bc6;
+    }
+
+    input:focus,
+    textarea:focus {
+      outline: none;
+      border-color: #ff33f6;
+    }
+
+    input,
+    textarea {
+      background-color: white;  /*Enables text color and the ability to see the cursor*/
+      cursor: auto;              /*Enables text color and the ability to see the cursor*/
+      color: black; /* forces text to be black */
+    }
+
+    input:disabled,
+    textarea:disabled {
+      background-color: #eee; /* Light gray for disabled inputs */
+      cursor: not-allowed;
+      color: black; /* Ensure text is readable when disabled */
+    }
+
+    input:disabled::placeholder,
+    textarea:disabled::placeholder {
+      color: #888; /*  Gray placeholder text when disabled */
+    }
+
+    ul,
+    ol {
+      list-style-position: inside;
+    }
+
+    /* For smooth scrolling */
+    html {
+      scroll-behavior: smooth;
+    }
+
+    /* For responsive width */
+    #root {
+      width: 100%;
+      max-width: 600px; /* Limit width for better readability */
+    }
+
+    /* Remove default styling for some elements */
+    ul {
+      list-style: none;
+    }
+
+    .profile-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      margin-bottom: 20px; /* Add space below profile container */
+    }
+
+    .profile-picture-container {
+      position: relative;
+      width: 150px;
+      height: 150px;
+      margin-bottom: 10px;
+    }
+
+
+    .profile-picture {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid #ff33f6; /* Add a border to the profile picture */
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 1; /* Ensure the image is above the overlay */
+    }
+
+    .profile-picture-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent white overlay */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-weight: bold;
+      color: #555;
+      text-align: center;
+      z-index: 2; /* Ensure the overlay is above the image */
+      pointer-events: none; /* Allow drops on the container */
+    }
+
+    .profile-picture-container.dragover .profile-picture-overlay {
+      background-color: rgba(200, 200, 200, 0.8); /* Change background color on dragover */
+      color: #333;
+    }
+
+    .input-group {
+      margin-bottom: 15px;
+      width: 100%;
+    }
+
+    .input-group label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+      color: #ff33f6;
+      background-color: #ff33f6; /* Pink background for label */
+      color: white; /* White text on pink background */
+      padding: 5px;
+      border-radius: 3px;
+    }
+
+    .input-group input,
+    .input-group textarea {
+      width: 100%;
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 1em;
+      color: black; /* default to black text */
+    }
+
+    .input-group textarea {
+      resize: vertical;
+      min-height: 100px;
+    }
+
+    #profilePictureInput {
+      display: none; /* Hide the file input */
+    }
+
+    /* Subject Interest Section */
+    .subject-interest-container {
+      width: 100%;
+      margin-bottom: 20px;
+      border: 1px dashed #ccc;
+      padding: 10px;
+      min-height: 50px; /* Make sure it's visible even when empty */
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+    }
+
+    .subject-block {
+      background-color: #5233ff; /* Updated blue background */
+      color: white;
+      padding: 5px 10px;
+      border-radius: 3px;
+      cursor: grab;
+      user-select: none;
+    }
+
+    .subject-options {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+      margin-bottom: 10px;
+      display: none; /* Hide subject options initially */
+    }
+
+    .subject-options .subject-block {
+      background-color: #5233ff; /* Updated blue background */
+      color: white;
+      cursor: grab;
+    }
+
+    .subject-interest-label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+      color: #ff33f6;
+      background-color: #ff33f6; /* Pink background for label */
+      color: white; /* White text on pink background */
+      padding: 5px;
+      border-radius: 3px;
+      width: 100%;
+      text-align: center;
+    }
+
+    /* Dark mode adjustments - not active by default */
+    @media (prefers-color-scheme: dark) {
+      :root {
+        color: rgba(255, 255, 255, 0.87);
+        background-color: white;
+      }
+
+      a:hover {
+        color: #ff6af2;
+      }
+
+      button {
+        background-color: #5233ff;
+        color: rgba(255, 255, 255, 0.87);
+      }
+
+      .profile-container {
+        border-color: white;
+      }
+
+      .input-group input,
+      .input-group textarea {
+        background-color: white;
+        color: rgba(255, 255, 255, 0.87);
+        border-color: white;
+      }
+
+      h1 {
+        background-color: #ff6af2; /* Slightly lighter pink in dark mode */
+      }
+
+      .input-group label {
+        background-color: #ff6af2; /* Slightly lighter pink in dark mode */
+      }
+
+      input:disabled,
+      textarea:disabled {
+        background-color: white;
+        color: #888;
+      }
+    }
+  </style>
 </head>
-
 <body>
-  <div class="container">
-    <header>
-      <h1>Education Order</h1>
-      <p>Connect with Expert Educators for Personalized Learning!</p>
-    </header>
+<div id="root">
+  <h1>Profile
+    <button id="editButton">Edit Profile</button>
+  </h1>
 
-    <nav>
-      <a href="#" id="profile-link" aria-label="Go to user profile">Profile</a>
-    </nav>
+  <div class="profile-container">
+    <div class="profile-picture-container">
+      <img src="placeholder-pfp.jpg" alt="Profile Picture" class="profile-picture" id="profilePicture">
+      <div class="profile-picture-overlay">Drag & Drop Image Here</div>
+    </div>
+    <input type="file" id="profilePictureInput" accept="image/*">
 
-    <section id="about">
-      <h2>About Education Order</h2>
-      <p>Education Order is a revolutionary platform connecting students with qualified educators for personalized learning experiences.
-        Founded with the mission to make quality education accessible to all, we provide a secure environment where learners can engage in
-        one-on-one conversations with expert tutors.</p>
-      <p>Our platform supports a wide range of subjects including Mathematics, Physics, English, Spanish, Chinese, and many more. We believe
-        in the power of personalized education and aim to create meaningful connections between students and educators from around the world.</p>
 
-      <div>
-        <h3>Our Mission</h3>
-        <p>To democratize access to quality education by creating a secure, flexible, and affordable learning platform that connects students
-          with qualified educators from diverse backgrounds and specialties.</p>
+    <div class="input-group">
+      <label for="username">Username:</label>
+      <input type="text" id="username" name="username" value="YourUsername" disabled>
+    </div>
+
+    <div class="input-group">
+      <label for="description">Description:</label>
+      <textarea id="description" name="description" disabled>Write something about yourself...</textarea>
+    </div>
+
+
+    <div class="input-group">
+      <label class="subject-interest-label">Subject Interests:</label>
+      <div class="subject-options" id="subjectOptions">
+        <div class="subject-block" draggable="true" data-subject="Mathematics">Mathematics</div>
+        <div class="subject-block" draggable="true" data-subject="Science">Science</div>
+        <div class="subject-block" draggable="true" data-subject="History">History</div>
+        <div class="subject-block" draggable="true" data-subject="Literature">Literature</div>
+        <div class="subject-block" draggable="true" data-subject="Computer Science">Computer Science</div>
+        <div class="subject-block" draggable="true" data-subject="Art">Art</div>
+        <div class="subject-block" draggable="true" data-subject="Music">Music</div>
+        <div class="subject-block" draggable="true" data-subject="Economics">Economics</div>
+        <div class="subject-block" draggable="true" data-subject="Philosophy">Philosophy</div>
+        <div class="subject-block" draggable="true" data-subject="Psychology">Psychology</div>
+        <div class="subject-block" draggable="true" data-subject="Sociology">Sociology</div>
+        <div class="subject-block" draggable="true" data-subject="Political Science">Political Science</div>
+        <div class="subject-block" draggable="true" data-subject="Engineering">Engineering</div>
+        <div class="subject-block" draggable="true" data-subject="Medicine">Medicine</div>
+        <div class="subject-block" draggable="true" data-subject="Law">Law</div>
       </div>
-
-      <div>
-        <h3>Our Vision</h3>
-        <p>A world where quality education is accessible to everyone, regardless of geographical location or economic status, empowering
-          individuals to achieve their full potential through personalized learning experiences.</p>
-      </div>
-    </section>
-
-    <section id="features">
-      <h2>Key Features</h2>
-
-      <div class="feature">
-        <h3>AI-Powered Chatbot Assistant</h3>
-        <p>Our intelligent chatbot helps users navigate the platform, find appropriate tutors, and get instant answers to common questions. The
-          chatbot uses natural language processing to understand user queries and provide relevant information about our services, pricing, and
-          educator qualifications.</p>
-      </div>
-
-      <div class="feature">
-        <h3>Educator Verification System</h3>
-        <p>All educators on our platform undergo a rigorous verification process to ensure they have the qualifications they claim. This includes
-          verification of degrees, certifications, and teaching experience. Students can feel confident that they're learning from qualified
-          professionals.</p>
-      </div>
-
-      <div class="feature">
-        <h3>Seamless Booking System</h3>
-        <p>Our intuitive booking system allows students to schedule sessions with their preferred educators based on availability. The platform
-          handles time zone differences automatically, ensuring both parties are clear about session timing.</p>
-      </div>
-
-      <div class="feature">
-        <h3>Secure Payment Processing</h3>
-        <p>Education Order uses a secure escrow payment system. Funds are held safely until sessions are completed, protecting both students and
-          educators. This ensures fair compensation for teachers and satisfaction guarantees for students.</p>
-      </div>
-    </section>
-
-    <section id="testimonials">
-      <h2>What Our Users Say</h2>
-
-      <div class="feature">
-        <p>"Education Order transformed my learning experience. The one-on-one sessions with qualified tutors helped me master complex math
-          concepts that I struggled with for years."</p>
-        <strong>— Sarah J., Student</strong>
-      </div>
-
-      <div class="feature">
-        <p>"As an educator, this platform has allowed me to reach students globally and share my expertise while earning a fair income. The
-          verification process ensures that only qualified teachers are on the platform."</p>
-        <strong>— Dr. Michael T., Mathematics Professor</strong>
-      </div>
-    </section>
-
-    <section id="cta">
-      <h2>Ready to Get Started?</h2>
-      <p>Join Education Order today to connect with expert educators and transform your learning experience!</p>
-      <p>Visit our <a href="https://github.com/kathy20316/EducationOrder">GitHub repository</a> to learn more about the project.</p>
-    </section>
-
-    <main id="main-content">
-      <!-- Content Loaded Here -->
-      <p>Welcome!</p>
-    </main>
-
-    <footer>
-      <p>© 2025 Education Order. All rights reserved.</p>
-      <p>Contact: support@educationorder.com</p>
-    </footer>
-  </div>
-
-  <!-- Chatbot Widget -->
-  <div id="chatbot">
-    <div id="chatbot-header">Chat with us!</div>
-    <div id="chatbot-body">
-      <div id="chatbot-messages"></div>
-      <div id="chatbot-input-container">
-        <input type="text" id="chatbot-input" placeholder="Type your question..." />
-        <button id="chatbot-send">Send</button>
+      <div class="subject-interest-container" id="subjectInterestContainer">
+        <!-- Existing Subject Blocks Will Go Here -->
       </div>
     </div>
+
+    <button id="saveButton" style="display: none;">Save Changes</button> <!-- Initially hidden -->
   </div>
+</div>
 
-  <p style="text-align: center; margin-top: 20px; color: #666;">
-    <small>Note: This is a static preview. To see the full interactive application, please run the development server.</small>
-  </p>
-  <script>
-    // Toggle chatbot window
-    document.getElementById('chatbot-header').addEventListener('click', function () {
-      var chatbotBody = document.getElementById('chatbot-body');
-      chatbotBody.style.display = (chatbotBody.style.display === 'none' || chatbotBody.style.display === '') ? 'block' : 'none';
+<script>
+  const editButton = document.getElementById('editButton');
+  const saveButton = document.getElementById('saveButton');
+  const usernameInput = document.getElementById('username');
+  const descriptionTextarea = document.getElementById('description');
+  const profilePicture = document.getElementById('profilePicture');
+  const profilePictureInput = document.getElementById('profilePictureInput');
+  const profilePictureContainer = document.querySelector('.profile-picture-container');
+  const profilePictureOverlay = document.querySelector('.profile-picture-overlay');
+  const subjectOptions = document.getElementById('subjectOptions');
+  const subjectInterestContainer = document.getElementById('subjectInterestContainer');
+
+  let isEditing = false; // Track editing state
+
+  //Initialize saved interests
+  let savedInterests = [];
+
+  editButton.addEventListener('click', () => {
+    isEditing = true;
+    usernameInput.disabled = false;
+    descriptionTextarea.disabled = false;
+    subjectOptions.style.display = 'flex';
+
+    //Force Text to be visible on edit
+    usernameInput.style.color = "black";
+    descriptionTextarea.style.color = "black";
+
+    editButton.style.display = 'none'; // Hide the edit button
+    saveButton.style.display = 'block'; // Show the save button
+
+    // Enable drag and drop and programmatic click on edit
+    profilePictureContainer.addEventListener('click', triggerFileInput);
+    profilePictureContainer.classList.add('editable');
+
+    // Enable dragging on subject options
+    enableSubjectDragging();
+  });
+
+  saveButton.addEventListener('click', () => {
+    const username = usernameInput.value;
+    const description = descriptionTextarea.value;
+    let isValid = true;
+    let errorMessage = "";
+
+    // Username validation
+    const specialCharRegex = /[!@#$%^&*()+\-=\[\]{};':"\\|,.<>\/?\s]/; // Regex to check for special characters
+
+    if (specialCharRegex.test(username)) {
+      isValid = false;
+      errorMessage += "Username should not contain special characters.  ";
+      usernameInput.style.color = "red";
+    } else {
+      usernameInput.style.color = "black"; //reset color in case of previous error
+    }
+
+    // Description validation
+    const wordCount = description.split(/\s+/).filter(Boolean).length; // splits on whitespace and counts words (filters out empty strings)
+    if (wordCount > 75) {
+      isValid = false;
+      errorMessage += "Description should be 75 words or less.";
+      descriptionTextarea.style.color = "red";
+    } else {
+      descriptionTextarea.style.color = "black"; //reset color in case of previous error
+    }
+
+    if (!isValid) {
+      alert(errorMessage);  // Display the error message
+      return; // Prevent saving if validation fails
+    }
+
+    // If validation passes, proceed with saving
+
+    isEditing = false;
+    usernameInput.disabled = true;
+    descriptionTextarea.disabled = true;
+    subjectOptions.style.display = 'none';
+
+    //Force Text to be invisible on save
+    usernameInput.style.color = "black";
+    descriptionTextarea.style.color = "black";
+
+    editButton.style.display = 'block'; // Show the edit button
+    saveButton.style.display = 'none'; // Hide the save button
+
+    // Disable drag and drop and programmatic click on save
+    profilePictureContainer.removeEventListener('click', triggerFileInput);
+    profilePictureContainer.classList.remove('editable');
+
+    // In a real application, you would now save the changes to a server or local storage.
+    // Here, you would also pass the validated username and description to the save function.
+
+    // Example of where you would use the validated values:
+    // saveProfileData(username, description, savedInterests);
+
+    alert('Changes saved!');
+
+    //Disable dragging
+    disableSubjectDragging();
+    //Save all dragged elements
+    savedInterests = Array.from(subjectInterestContainer.children).map(item => item.dataset.subject);
+  });
+
+  function triggerFileInput() {
+    profilePictureInput.click();
+  }
+
+  profilePictureInput.addEventListener('change', (event) => {
+    handleImageUpload(event);
+  });
+
+  // Drag and Drop Functionality
+  profilePictureContainer.addEventListener('dragover', (e) => {
+    if (!profilePictureContainer.classList.contains('editable')) return;
+    e.preventDefault();  // Allow the drop
+    profilePictureContainer.classList.add('dragover');
+  });
+
+  profilePictureContainer.addEventListener('dragleave', (e) => {
+    if (!profilePictureContainer.classList.contains('editable')) return;
+    profilePictureContainer.classList.remove('dragover');
+  });
+
+
+  profilePictureContainer.addEventListener('drop', (e) => {
+    if (!profilePictureContainer.classList.contains('editable')) return;
+    e.preventDefault();
+    profilePictureContainer.classList.remove('dragover');
+
+    const file = e.dataTransfer.files[0];
+    if (file && file.type.startsWith('image/')) {
+      handleFile(file);
+    }
+  });
+
+  function handleFile(file) {
+    const reader = new FileReader();
+
+    reader.onload = (e) => {
+      profilePicture.src = e.target.result; // Update the image source with the chosen file
+      profilePictureOverlay.style.display = 'none'; // Hide the overlay when image is present.
+    };
+
+    reader.readAsDataURL(file); // Read the file as a data URL
+  }
+
+  function handleImageUpload(event) {
+    const file = event.target.files[0];
+
+    if (file) {
+      const reader = new FileReader();
+
+      reader.onload = (e) => {
+        profilePicture.src = e.target.result; // Update the image source with the chosen file
+        profilePictureOverlay.style.display = 'none'; // Hide the overlay when image is present.
+      };
+
+      reader.readAsDataURL(file); // Read the file as a data URL
+    }
+  }
+
+  // Subject Interest Drag and Drop
+  let draggedSubject = null;
+
+  function enableSubjectDragging() {
+    const subjectBlocks = document.querySelectorAll('.subject-block');
+    subjectBlocks.forEach(block => {
+      block.draggable = true;
+      block.addEventListener('dragstart', dragStart);
+      block.addEventListener('dragend', dragEnd);
     });
 
-    // Integrate Google Gemini AI via API
-    document.getElementById('chatbot-send').addEventListener('click', function () {
-      const inputField = document.getElementById('chatbot-input');
-      const userInput = inputField.value.trim();
-      if (userInput !== "") {
-        const messagesDiv = document.getElementById('chatbot-messages');
+    subjectInterestContainer.addEventListener('dragover', dragOver);
+    subjectInterestContainer.addEventListener('drop', drop);
+    subjectInterestContainer.addEventListener('dragenter', dragEnter);
+    subjectInterestContainer.addEventListener('dragleave', dragLeave);
+    subjectOptions.addEventListener('dragover', dragOver);
+    subjectOptions.addEventListener('drop', drop);
+    subjectOptions.addEventListener('dragenter', dragEnter);
+    subjectOptions.addEventListener('dragleave', dragLeave);
+  }
 
-        // Append the user's message
-        const userMessage = document.createElement('div');
-        userMessage.style.textAlign = 'right';
-        userMessage.style.margin = '5px';
-        userMessage.innerHTML = '<strong>You:</strong> ' + userInput;
-        messagesDiv.appendChild(userMessage);
+  function disableSubjectDragging() {
+    const subjectBlocks = document.querySelectorAll('.subject-block');
+    subjectBlocks.forEach(block => {
+      block.draggable = false;
+      block.removeEventListener('dragstart', dragStart);
+      block.removeEventListener('dragend', dragEnd);
+    });
+    subjectInterestContainer.removeEventListener('dragover', dragOver);
+    subjectInterestContainer.removeEventListener('drop', drop);
+    subjectInterestContainer.removeEventListener('dragenter', dragEnter);
+    subjectInterestContainer.removeEventListener('dragleave', dragLeave);
+    subjectOptions.removeEventListener('dragover', dragOver);
+    subjectOptions.addEventListener('drop', drop);
+    subjectOptions.addEventListener('dragenter', dragEnter);
+    subjectOptions.addEventListener('dragleave', dragLeave);
+  }
 
-        // Append a temporary loading message
-        const loadingMessage = document.createElement('div');
-        loadingMessage.style.textAlign = 'left';
-        loadingMessage.style.margin = '5px';
-        loadingMessage.innerHTML = '<strong>Bot:</strong> ...';
-        messagesDiv.appendChild(loadingMessage);
-        messagesDiv.scrollTop = messagesDiv.scrollHeight;
+  function dragStart(event) {
+    draggedSubject = event.target;
+    event.dataTransfer.setData('text', event.target.dataset.subject);
+    event.target.classList.add('dragging');
+  }
 
-        // Prepare payload per Gemini documentation
-        const payload = {
-          contents: [{
-            parts: [{
-              text: userInput
-            }]
-          }]
-        };
+  function dragEnd(event) {
+    event.target.classList.remove('dragging');
+    draggedSubject = null;
+  }
 
-        // Use the Gemini endpoint with your API key.
-        fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=AIzaSyBimdkgUh-ooOc6RTchwk-bOCsQ5jed0x0', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(payload)
-          })
-          .then(response => response.json())
-          .then(data => {
-            // Remove the loading message
-            messagesDiv.removeChild(loadingMessage);
-            // Assume the API returns generated content within the "candidates" array.
-            // Adjust based on the official response structure.
-            const generatedText = data.candidates && data.candidates.length > 0 &&
-              data.candidates[0].content &&
-              data.candidates[0].content.parts &&
-              data.candidates[0].content.parts.length > 0 ?
-              data.candidates[0].content.parts[0].text :
-              "No response received.";
-            // Display AI response
-            const botMessage = document.createElement('div');
-            botMessage.style.textAlign = 'left';
-            botMessage.style.margin = '5px';
-            botMessage.innerHTML = '<strong>Bot:</strong> ' + generatedText;
-            messagesDiv.appendChild(botMessage);
-            messagesDiv.scrollTop = messagesDiv.scrollHeight;
-          })
-          .catch(error => {
-            messagesDiv.removeChild(loadingMessage);
-            const errorMessage = document.createElement('div');
-            errorMessage.style.textAlign = 'left';
-            errorMessage.style.margin = '5px';
-            errorMessage.innerHTML = '<strong>Bot:</strong> Sorry, an error occurred. Please try again.';
-            messagesDiv.appendChild(errorMessage);
-            messagesDiv.scrollTop = messagesDiv.scrollHeight;
-            console.error('Error:', error);
-          });
+  function dragOver(event) {
+    event.preventDefault();
+  }
 
-        // Clear the input field.
-        inputField.value = '';
+  function dragEnter(event) {
+    event.preventDefault();
+    event.target.classList.add('drag-over');
+  }
+
+  function dragLeave(event) {
+    event.target.classList.remove('drag-over');
+  }
+
+  function drop(event) {
+    event.preventDefault();
+    event.target.classList.remove('drag-over');
+    const data = event.dataTransfer.getData('text');
+    const droppedSubject = document.querySelector(`.subject-block[data-subject="${data}"]`);
+
+    if (event.target === subjectInterestContainer) {
+      // Move to interest container
+      if (droppedSubject && !subjectInterestContainer.contains(droppedSubject)) {
+        subjectInterestContainer.appendChild(droppedSubject);
       }
-    });
-  </script>
-  <script src="scripts/link.js"></script>
-</body>
+    } else if (event.target === subjectOptions) {
+      //Move to subject container
+      if (droppedSubject && !subjectOptions.contains(droppedSubject)) {
+        subjectOptions.appendChild(droppedSubject);
+      }
+    }
+  }
 
+  //Set Initial List
+  window.onload = () => {
+    savedInterests.forEach(interest => {
+      const block = document.querySelector(`.subject-block[data-subject="${interest}"]`);
+      if(block && !subjectInterestContainer.contains(block)){
+        subjectInterestContainer.appendChild(block);
+      }
+    })
+  }
+
+</script>
+</body>
 </html>

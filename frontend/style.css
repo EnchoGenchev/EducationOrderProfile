@@ -1,308 +1,136 @@
-:root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
-
-  color-scheme: light dark;
-  color: black; /* Default text color */
-  background-color: white;
-
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  -webkit-text-size-adjust: 100%;
-}
-
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-h1 {
-  font-size: 2.2em;
-  line-height: 1.1;
-  margin-bottom: 20px; /* Add some space below the title */
-  background-color: #ff33f6; /* Pink background for header */
-  color: white; /* White text on pink background */
-  padding: 10px;
-  border-radius: 5px;
-  position: relative; /* Required for absolute positioning of the button */
-}
-
-/* Edit Button Styling */
-#editButton {
-  position: absolute;
-  top: 10px; /* Adjust as needed */
-  right: 10px; /* Adjust as needed */
-  font-size: 0.8em; /* Smaller font size */
-  padding: 5px 10px; /* Smaller padding */
-  background-color: #5233ff; /* Updated blue background */
-  color: white; /* White text */
-  border-radius: 3px;
-  border: none; /* Remove border */
-  cursor: pointer;
-}
-
-/* Save Button Styling */
-#saveButton {
-  background-color: #5233ff; /* Updated blue background */
-  color: white; /* White text */
-  border-radius: 3px;
-  border: none; /* Remove border */
-  cursor: pointer;
-}
-
-
-button {
-  border: none;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  cursor: pointer;
-  transition: all 0.25s;
-  background-color: #f0f0f0; /* Light grey button background */
-  padding: 10px 20px;
-  border-radius: 5px;
-  margin-top: 10px; /*Added to create separation*/
-}
-
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
-}
-
-a {
-  font-weight: 500;
-  color: #ff33f6; /* Keep link color pink */
-  text-decoration: inherit;
-}
-
-a:hover {
-  color: #d02bc6;
-}
-
-input:focus,
-textarea:focus {
-  outline: none;
-  border-color: #ff33f6;
-}
-
-input,
-textarea {
-  background-color: white;  /*Enables text color and the ability to see the cursor*/
-  cursor: auto;              /*Enables text color and the ability to see the cursor*/
-  color: black; /* forces text to be black */
-}
-
-input:disabled,
-textarea:disabled {
-  background-color: #eee; /* Light gray for disabled inputs */
-  cursor: not-allowed;
-  color: black; /* Ensure text is readable when disabled */
-}
-
-input:disabled::placeholder,
-textarea:disabled::placeholder {
-  color: #888; /*  Gray placeholder text when disabled */
-}
-
-ul,
-ol {
-  list-style-position: inside;
-}
-
-/* For smooth scrolling */
-html {
-  scroll-behavior: smooth;
-}
-
-/* For responsive width */
-#root {
-  width: 100%;
-  max-width: 600px; /* Limit width for better readability */
-}
-
-/* Remove default styling for some elements */
-ul {
-  list-style: none;
-}
-
-.profile-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 20px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  margin-bottom: 20px; /* Add space below profile container */
-}
-
-.profile-picture-container {
-  position: relative;
-  width: 150px;
-  height: 150px;
-  margin-bottom: 10px;
-}
-
-
-.profile-picture {
-  width: 100%;
-  height: 100%;
-  border-radius: 50%;
-  object-fit: cover;
-  border: 2px solid #ff33f6; /* Add a border to the profile picture */
-  position: absolute;
-  top: 0;
-  left: 0;
-  z-index: 1; /* Ensure the image is above the overlay */
-}
-
-.profile-picture-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  border-radius: 50%;
-  background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent white overlay */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-weight: bold;
-  color: #555;
-  text-align: center;
-  z-index: 2; /* Ensure the overlay is above the image */
-  pointer-events: none; /* Allow drops on the container */
-}
-
-.profile-picture-container.dragover .profile-picture-overlay {
-  background-color: rgba(200, 200, 200, 0.8); /* Change background color on dragover */
-  color: #333;
-}
-
-.input-group {
-  margin-bottom: 15px;
-  width: 100%;
-}
-
-.input-group label {
-  display: block;
-  margin-bottom: 5px;
-  font-weight: bold;
-  color: #ff33f6;
-  background-color: #ff33f6; /* Pink background for label */
-  color: white; /* White text on pink background */
-  padding: 5px;
-  border-radius: 3px;
-}
-
-.input-group input,
-.input-group textarea {
-  width: 100%;
-  padding: 8px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  font-size: 1em;
-  color: black; /* default to black text */
-}
-
-.input-group textarea {
-  resize: vertical;
-  min-height: 100px;
-}
-
-#profilePictureInput {
-  display: none; /* Hide the file input */
-}
-
-/* Subject Interest Section */
-.subject-interest-container {
-  width: 100%;
-  margin-bottom: 20px;
-  border: 1px dashed #ccc;
-  padding: 10px;
-  min-height: 50px; /* Make sure it's visible even when empty */
-  display: flex;
-  flex-wrap: wrap;
-  gap: 5px;
-}
-
-.subject-block {
-  background-color: #5233ff; /* Updated blue background */
-  color: white;
-  padding: 5px 10px;
-  border-radius: 3px;
-  cursor: grab;
-  user-select: none;
-}
-
-.subject-options {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 5px;
-  margin-bottom: 10px;
-  display: none; /* Hide subject options initially */
-}
-
-.subject-options .subject-block {
-  background-color: #5233ff; /* Updated blue background */
-  color: white;
-  cursor: grab;
-}
-
-.subject-interest-label {
-  display: block;
-  margin-bottom: 5px;
-  font-weight: bold;
-  color: #ff33f6;
-  background-color: #ff33f6; /* Pink background for label */
-  color: white; /* White text on pink background */
-  padding: 5px;
-  border-radius: 3px;
-  width: 100%;
-  text-align: center;
-}
-
-/* Dark mode adjustments - not active by default */
-@media (prefers-color-scheme: dark) {
-  :root {
-    color: rgba(255, 255, 255, 0.87);
-    background-color: white;
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    margin: 0;
+    padding: 20px;
+    color: #333;
   }
-
-  a:hover {
-    color: #ff6af2;
+  .container {
+    max-width: 800px;
+    margin: 0 auto;
   }
-
-  button {
-    background-color: #5233ff;
-    color: rgba(255, 255, 255, 0.87);
+  header {
+    background-color: #ff33f6;
+    color: white;
+    padding: 20px;
+    text-align: center;
+    margin-bottom: 20px;
   }
-
-  .profile-container {
-    border-color: white;
-  }
-
-  .input-group input,
-  .input-group textarea {
-    background-color: white;
-    color: rgba(255, 255, 255, 0.87);
-    border-color: white;
-  }
-
   h1 {
-    background-color: #ff6af2; /* Slightly lighter pink in dark mode */
+    margin: 0;
   }
-
-  .input-group label {
-    background-color: #ff6af2; /* Slightly lighter pink in dark mode */
+  section {
+    margin-bottom: 30px;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 5px;
   }
-
-  input:disabled,
-  textarea:disabled {
+  h2 {
+    color: #ff33f6;
+    border-bottom: 2px solid #7c0e77;
+    padding-bottom: 10px;
+  }
+  .feature {
     background-color: white;
-    color: #888;
+    margin-bottom: 15px;
+    padding: 15px;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
   }
-}
+  .feature h3 {
+    color: #030003;
+    margin-top: 0;
+  }
+  footer {
+    background-color: #5233ff;
+    color: white;
+    padding: 20px;
+    text-align: center;
+    margin-top: 20px;
+  }
+  a {
+    color: #ff33f6;
+    text-decoration: none;
+  }
+  a:hover {
+    text-decoration: underline;
+  }
+  
+  /* Chatbot widget styles */
+  #chatbot {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 300px;
+    font-family: Arial, sans-serif;
+    z-index: 1000;
+  }
+  #chatbot-header {
+    background-color: #333dff;
+    color: white;
+    padding: 10px;
+    border-radius: 5px 5px 0 0;
+    cursor: pointer;
+    text-align: center;
+  }
+  #chatbot-body {
+    display: none;
+    background: white;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+    border-radius: 0 0 5px 5px;
+    max-height: 400px;
+    overflow-y: auto;
+  }
+  #chatbot-messages {
+    padding: 10px;
+    height: 250px;
+    overflow-y: auto;
+  }
+  #chatbot-input-container {
+    display: flex;
+    border-top: 1px solid #ccc;
+  }
+  #chatbot-input {
+    flex: 1;
+    padding: 10px;
+    border: none;
+    outline: none;
+  }
+  #chatbot-send {
+    padding: 10px;
+    background-color: #262fd9;
+    border: none;
+    color: white;
+    cursor: pointer;
+  }
+  #chatbot-send:hover {
+    background-color: #a8e026;
+  }
+  
+  
+  nav {
+    position: absolute;
+    top: 20px; 
+    right: 20px; 
+  }
+  
+  nav a {
+    color: white;
+    text-decoration: none;
+    padding: 10px 20px; 
+    font-size: 1.2em; 
+    background-color:  #262fd9; 
+    border: none; 
+    border-radius: 5px;
+  }
+  
+  nav a:hover {
+    text-decoration: none; 
+    background-color: #a8e026; 
+    color: white; 
+  }
+  
+  nav a:focus {
+    outline: none;
+    box-shadow: 0 0 5px #333dff;
+  }
