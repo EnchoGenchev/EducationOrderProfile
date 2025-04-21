@@ -4,312 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Profile Editor</title>
-  <style>
-    /* ===== Base Styles (Adapted from previous) ===== */
-    :root {
-        /* Define base font size if needed, e.g., font-size: 16px; */
-    }
-    * { /* Apply box-sizing globally */
-        box-sizing: border-box;
-        margin: 0;
-        padding: 0;
-    }
-    body {
-      font-family: Arial, sans-serif;
-      line-height: 1.6;
-      /* margin: 0; */ /* Handled by * reset */
-      padding: 20px;
-      color: #333;
-      background-color: #f0f0f0;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      min-height: 100vh;
-    }
-
-    #root {
-      max-width: 800px;
-      width: 100%;
-      margin: 0 auto;
-    }
-
-    /* ===== Header (H1) Styling ===== */
-    /* The header (h1) and profile-container naturally have the same width
-       because they are both direct children of #root which defines the max-width */
-    h1 {
-      background: linear-gradient(to right, rgb(225, 231, 114), rgb(111, 227, 111), rgb(77, 64, 221));
-      color: rgb(19, 6, 118);
-      padding: 0.8rem 15px;
-      border-radius: 10px;
-      margin: 0 0 20px 0; /* Reset margin */
-      font-size: 2.0em; /* Slightly adjust size if needed */
-      line-height: 1.2;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    h1 > span {
-        flex-grow: 1;
-    }
-
-    .header-buttons {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      flex-shrink: 0;
-    }
-
-    /* Profile container */
-    .profile-container {
-      margin-bottom: 30px;
-      padding: 20px;
-      background-color: #f9f9f9;
-      border-radius: 5px;
-      border: none;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      width: 100%; /* Takes width from #root */
-    }
-
-    .input-group {
-      margin-bottom: 15px;
-      width: 100%;
-    }
-
-    /* Gradient Styling for Labels and Subject Container */
-    label[for="username"],
-    label[for="description"],
-    .subject-interest-label,
-    .subject-interest-container {
-        background: linear-gradient(to right, rgb(225, 231, 114), rgb(111, 227, 111), rgb(77, 64, 221));
-        color: white;
-        padding: 8px 12px;
-        border-radius: 5px;
-        font-weight: bold;
-        display: block;
-        margin-bottom: 5px;
-        width: 100%; /* Explicitly set width for clarity */
-    }
-
-    .subject-interest-label {
-        text-align: center;
-        margin-bottom: 10px;
-    }
-
-    .subject-interest-container {
-        margin-bottom: 20px;
-        min-height: 70px;
-        display: flex;
-        flex-wrap: wrap;
-        gap: 8px;
-        border: none;
-        padding: 10px;
-    }
-
-    /* ===== Input Styling ===== */
-    /* Input/Textarea width matches label width due to width: 100% and box-sizing */
-    input[type="text"], /* Be more specific */
-    textarea {
-      width: 100%; /* Takes full width of .input-group */
-      padding: 8px;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-      font-size: 1em;
-      background-color: white;
-      color: black;
-      cursor: auto;
-      /* margin-top: 0; */ /* Reset handled by * */
-      display: block; /* Ensure they behave as blocks */
-    }
-    input:focus,
-    textarea:focus {
-      outline: none;
-      border-color: #3a33ff;
-    }
-    input:disabled,
-    textarea:disabled {
-      background-color: #eee;
-      cursor: not-allowed;
-      color: #555;
-    }
-    textarea {
-       resize: vertical;
-       min-height: 100px;
-    }
-
-    /* Link styling (General - applies to Home button base) */
-    a {
-      color: #3a33ff;
-      text-decoration: none;
-    }
-    a:hover {
-      text-decoration: underline;
-    }
-
-    /* Button Styling (General - for Save button mostly) */
-     button {
-        border: none;
-        font-size: 1em;
-        font-weight: 500;
-        font-family: inherit; /* Inherit from body */
-        cursor: pointer;
-        transition: all 0.25s;
-        background-color: #e0e0e0;
-        color: #333;
-        padding: 10px 20px;
-        border-radius: 5px;
-        margin-top: 10px;
-      }
-      button:hover {
-        background-color: #c7c7c7;
-      }
-      button:focus,
-      button:focus-visible {
-        outline: 2px auto #3a33ff;
-        outline-offset: 2px;
-      }
-
-
-    /* ===== Button Sizing & Font Matching (Home & Edit) ===== */
-    #homeButton,
-    #editButton {
-      font-size: 0.8em;      /* SAME Font Size */
-      padding: 5px 10px;     /* SAME Padding */
-      border-radius: 3px;
-      border: none;
-      margin: 0;
-      font-family: inherit;  /* SAME Font Family (Inherited) */
-      line-height: 1.3;      /* SAME Line Height for vertical consistency */
-      display: inline-flex;  /* Use flex for alignment if content varies */
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      cursor: pointer;
-      transition: background-color 0.25s; /* Keep transition */
-    }
-
-    /* Specific background/color for Edit Button */
-    #editButton {
-      background-color: #5233ff;
-      color: white;
-    }
-     #editButton:hover {
-         background-color: #4128cc;
-         color: white; /* Ensure hover color remains */
-     }
-
-    /* Specific background/color for Home Button */
-    #homeButton {
-      background-color: #262fd9;
-      color: white;
-      text-decoration: none; /* Override general link styles */
-    }
-    #homeButton:hover {
-      text-decoration: none; /* Override general link styles */
-      background-color: #a8e026;
-      color: white;
-    }
-    #homeButton:focus { /* Keep specific focus style if desired */
-        outline: none;
-        box-shadow: 0 0 5px #333dff;
-    }
-    /* ==================================================== */
-
-    /* Save Button Styling */
-    #saveButton {
-      background-color: #5233ff;
-      color: white;
-      border-radius: 3px;
-      border: none;
-      padding: 10px 20px;
-      font-size: 1em;
-      margin-top: 15px;
-    }
-     #saveButton:hover {
-         background-color: #4128cc;
-     }
-
-    /* Profile Picture */
-    .profile-picture-container {
-      position: relative;
-      width: 150px;
-      height: 150px;
-      margin-bottom: 20px;
-    }
-    .profile-picture {
-      width: 100%;
-      height: 100%;
-      border-radius: 50%;
-      object-fit: cover;
-      border: 2px solid #7c0e77;
-      position: absolute;
-      top: 0;
-      left: 0;
-      z-index: 1;
-    }
-    .profile-picture-overlay {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      border-radius: 50%;
-      background-color: rgba(255, 255, 255, 0.8);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-weight: bold;
-      color: #555;
-      text-align: center;
-      z-index: 2;
-      pointer-events: none;
-      font-size: 0.9em;
-    }
-     .profile-picture-container.dragover .profile-picture-overlay {
-        background-color: rgba(200, 200, 200, 0.8);
-        color: #333;
-      }
-      #profilePictureInput {
-        display: none;
-      }
-
-    /* Subject Interest Options Area */
-    .subject-options {
-      display: none;
-      flex-wrap: wrap;
-      gap: 5px;
-      margin-bottom: 10px;
-      padding: 10px;
-      background-color: #e9e9e9;
-      border-radius: 4px;
-    }
-    /* Subject Blocks */
-    .subject-block {
-      background-color: #5233ff;
-      color: white;
-      padding: 5px 10px;
-      border-radius: 3px;
-      cursor: grab;
-      user-select: none;
-      font-size: 0.9em;
-    }
-    .subject-block.dragging {
-       opacity: 0.5;
-    }
-    .subject-interest-container.drag-over,
-    .subject-options.drag-over {
-        outline: 2px dashed #3a33ff;
-        background-color: #f0f5ff;
-    }
-
-    /* Hide file input */
-    #profilePictureInput {
-      display: none;
-    }
-
-  </style>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
 <div id="root">
@@ -323,27 +18,27 @@
 
   <div class="profile-container">
     <div class="profile-picture-container">
+      <!-- Image remains the primary element for display -->
       <img src="placeholder-pfp.jpg" alt="Profile Picture" class="profile-picture" id="profilePicture">
-      <div class="profile-picture-overlay">Click or Drag & Drop</div>
+      <!-- Overlay will show 'Click to Change' or be hidden -->
+      <div class="profile-picture-overlay"></div>
     </div>
+    <!-- Hidden file input remains the same -->
     <input type="file" id="profilePictureInput" accept="image/*">
 
-
+    <!-- Input groups remain the same -->
     <div class="input-group">
       <label for="username">Username:</label>
       <input type="text" id="username" name="username" value="YourUsername" disabled>
     </div>
-
     <div class="input-group">
       <label for="description">Description:</label>
       <textarea id="description" name="description" disabled>Write something about yourself...</textarea>
     </div>
-
-
     <div class="input-group">
       <label class="subject-interest-label">Subject Interests (Drag & Drop)</label>
       <div class="subject-options" id="subjectOptions">
-        <!-- Subject options populated by JS or hardcoded -->
+         <!-- Subject options -->
         <div class="subject-block" draggable="true" data-subject="Mathematics">Mathematics</div>
         <div class="subject-block" draggable="true" data-subject="Science">Science</div>
         <div class="subject-block" draggable="true" data-subject="History">History</div>
@@ -364,176 +59,26 @@
         <!-- Subject blocks will appear here when dragged -->
       </div>
     </div>
-
     <button id="saveButton" style="display: none;">Save Changes</button>
   </div>
 
+  <!-- ======================= -->
+  <!-- == PFP Modal Section == -->
+  <!-- ======================= -->
+  <div id="modalOverlay"></div> <!-- Background overlay -->
+  <div id="pfpModal">
+    <button class="modal-close" id="modalCloseButton" aria-label="Close modal">×</button>
+    <div id="modalTitle">Update Profile Picture</div>
+    <div id="modalMessage"></div> <!-- Optional message area -->
+    <div class="modal-buttons">
+      <button id="modalChooseFileButton" class="modal-button">Choose File</button>
+      <button id="modalDragDropButton" class="modal-button">Drag & Drop</button>
+    </div>
+  </div>
+  <!-- ======================= -->
+
 </div>
 
-<script>
-  // No changes needed to JavaScript for these specific style adjustments
-  const editButton = document.getElementById('editButton');
-  const saveButton = document.getElementById('saveButton');
-  const usernameInput = document.getElementById('username');
-  const descriptionTextarea = document.getElementById('description');
-  const profilePicture = document.getElementById('profilePicture');
-  const profilePictureInput = document.getElementById('profilePictureInput');
-  const profilePictureContainer = document.querySelector('.profile-picture-container');
-  const profilePictureOverlay = document.querySelector('.profile-picture-overlay');
-  const subjectOptions = document.getElementById('subjectOptions');
-  const subjectInterestContainer = document.getElementById('subjectInterestContainer');
-
-  let isEditing = false;
-  let savedInterests = ["Mathematics", "Computer Science"]; // Example
-
-  editButton.addEventListener('click', () => {
-    isEditing = true;
-    usernameInput.disabled = false;
-    descriptionTextarea.disabled = false;
-    subjectOptions.style.display = 'flex';
-
-    usernameInput.style.borderColor = "#ccc";
-    descriptionTextarea.style.borderColor = "#ccc";
-
-    editButton.style.display = 'none'; // Hide edit button in header
-    saveButton.style.display = 'block'; // Show save button below content
-
-    profilePictureContainer.addEventListener('click', triggerFileInput);
-    profilePictureContainer.classList.add('editable');
-    profilePictureOverlay.textContent = 'Click or Drag & Drop';
-
-    enableSubjectDragging();
-  });
-
-  saveButton.addEventListener('click', () => {
-    const username = usernameInput.value;
-    const description = descriptionTextarea.value;
-    let isValid = true;
-    let errorMessage = "";
-
-    const specialCharRegex = /[!@#$%^&*()+\-=\[\]{};':"\\|,.<>\/?\s]/;
-    if (specialCharRegex.test(username)) {
-      isValid = false;
-      errorMessage += "Username should not contain special characters or spaces. ";
-      usernameInput.style.borderColor = "red";
-    } else {
-      usernameInput.style.borderColor = "#ccc";
-    }
-
-    const wordCount = description.trim().split(/\s+/).filter(Boolean).length;
-    if (wordCount > 75) {
-      isValid = false;
-      errorMessage += "Description should be 75 words or less.";
-      descriptionTextarea.style.borderColor = "red";
-    } else {
-      descriptionTextarea.style.borderColor = "#ccc";
-    }
-
-    if (!isValid) {
-      alert(errorMessage.trim());
-      return;
-    }
-
-    isEditing = false;
-    usernameInput.disabled = true;
-    descriptionTextarea.disabled = true;
-    subjectOptions.style.display = 'none';
-
-    usernameInput.style.borderColor = "#ccc";
-    descriptionTextarea.style.borderColor = "#ccc";
-
-    // Use correct display type based on CSS rule (#homeButton, #editButton use inline-flex)
-    editButton.style.display = 'inline-flex'; // Show edit button back in header
-    saveButton.style.display = 'none'; // Hide save button
-
-    profilePictureContainer.removeEventListener('click', triggerFileInput);
-    profilePictureContainer.classList.remove('editable');
-    profilePictureOverlay.textContent = 'Drag & Drop Image Here'; // Reset text
-
-    savedInterests = Array.from(subjectInterestContainer.children).map(item => item.dataset.subject);
-
-    console.log("Saving data:", {
-      username: username,
-      description: description,
-      interests: savedInterests,
-    });
-
-    alert('Changes saved!');
-    disableSubjectDragging();
-  });
-
-  function triggerFileInput() {
-    if (!isEditing) return;
-    profilePictureInput.click();
-  }
-
-  profilePictureInput.addEventListener('change', handleImageUpload);
-
-    // --- Drag/Drop functions (Profile Pic & Subjects) ---
-    // --- (Keep the existing JS functions for these features) ---
-    profilePictureContainer.addEventListener('dragover', (e) => {
-      if (!isEditing) return; e.preventDefault(); profilePictureContainer.classList.add('dragover');
-    });
-    profilePictureContainer.addEventListener('dragleave', (e) => {
-      if (!isEditing) return; profilePictureContainer.classList.remove('dragover');
-    });
-    profilePictureContainer.addEventListener('drop', (e) => {
-      if (!isEditing) return; e.preventDefault(); profilePictureContainer.classList.remove('dragover');
-      const file = e.dataTransfer.files[0]; if (file && file.type.startsWith('image/')) { handleFile(file); }
-    });
-    function handleFile(file) {
-      const reader = new FileReader(); reader.onload = (e) => { profilePicture.src = e.target.result; profilePictureOverlay.style.display = 'none'; }; reader.readAsDataURL(file);
-    }
-    function handleImageUpload(event) {
-      const file = event.target.files[0]; if (file && file.type.startsWith('image/')) { handleFile(file); }
-    }
-
-    // --- Subject Drag/Drop JS (Keep existing functions) ---
-    let draggedSubject = null;
-    function enableSubjectDragging() {
-      const subjectBlocks = document.querySelectorAll('#subjectOptions .subject-block, #subjectInterestContainer .subject-block');
-      subjectBlocks.forEach(block => { block.draggable = true; block.addEventListener('dragstart', dragStart); block.addEventListener('dragend', dragEnd); });
-      [subjectInterestContainer, subjectOptions].forEach(container => { container.addEventListener('dragover', dragOver); container.addEventListener('dragenter', dragEnter); container.addEventListener('dragleave', dragLeave); });
-      subjectInterestContainer.addEventListener('drop', dropOnInterestContainer); subjectOptions.addEventListener('drop', dropOnOptionsContainer);
-    }
-    function disableSubjectDragging() {
-      const subjectBlocks = document.querySelectorAll('#subjectOptions .subject-block, #subjectInterestContainer .subject-block');
-      subjectBlocks.forEach(block => { block.draggable = false; block.removeEventListener('dragstart', dragStart); block.removeEventListener('dragend', dragEnd); });
-      [subjectInterestContainer, subjectOptions].forEach(container => { container.removeEventListener('dragover', dragOver); container.removeEventListener('dragenter', dragEnter); container.removeEventListener('dragleave', dragLeave); container.classList.remove('drag-over'); });
-      subjectInterestContainer.removeEventListener('drop', dropOnInterestContainer); subjectOptions.removeEventListener('drop', dropOnOptionsContainer);
-    }
-    function dragStart(event) { if (!event.target.classList.contains('subject-block')) return; draggedSubject = event.target; event.dataTransfer.setData('text/plain', event.target.dataset.subject); event.dataTransfer.effectAllowed = 'move'; setTimeout(() => { if(draggedSubject) draggedSubject.classList.add('dragging'); }, 0); }
-    function dragEnd(event) { setTimeout(() => { const currentDragged = document.querySelector('.subject-block.dragging'); if (currentDragged) { currentDragged.classList.remove('dragging'); } subjectInterestContainer.classList.remove('drag-over'); subjectOptions.classList.remove('drag-over'); draggedSubject = null; }, 0); }
-    function dragOver(event) { event.preventDefault(); event.dataTransfer.dropEffect = 'move'; }
-    function dragEnter(event) { event.preventDefault(); const targetContainer = event.target.closest('.subject-interest-container, .subject-options'); if (targetContainer && draggedSubject && !targetContainer.contains(draggedSubject)) { targetContainer.classList.add('drag-over'); } }
-    function dragLeave(event) { const targetContainer = event.target.closest('.subject-interest-container, .subject-options'); if (targetContainer && !targetContainer.contains(event.relatedTarget)) { targetContainer.classList.remove('drag-over'); } if (event.target === subjectInterestContainer || event.target === subjectOptions) { event.target.classList.remove('drag-over'); } }
-    function dropOnInterestContainer(event) { event.preventDefault(); const targetContainer = event.target.closest('.subject-interest-container'); if (targetContainer && draggedSubject && !targetContainer.contains(draggedSubject)) { targetContainer.appendChild(draggedSubject); } targetContainer?.classList.remove('drag-over'); }
-    function dropOnOptionsContainer(event) { event.preventDefault(); const targetContainer = event.target.closest('.subject-options'); if (targetContainer && draggedSubject && !targetContainer.contains(draggedSubject)) { targetContainer.appendChild(draggedSubject); sortSubjectOptions(); } targetContainer?.classList.remove('drag-over'); }
-    function sortSubjectOptions() { const options = Array.from(subjectOptions.children); options.sort((a, b) => a.dataset.subject.localeCompare(b.dataset.subject)); options.forEach(option => subjectOptions.appendChild(option)); }
-    // ------------------------------------------------------
-
-  function initializeProfile() {
-    savedInterests.forEach(interest => {
-      const block = subjectOptions.querySelector(`.subject-block[data-subject="${interest}"]`);
-      if(block){ subjectInterestContainer.appendChild(block); }
-    });
-
-     if (profilePicture.src.includes('placeholder-pfp.jpg') || !profilePicture.getAttribute('src')) {
-        profilePictureOverlay.style.display = 'flex';
-        if(!profilePicture.getAttribute('src')) { profilePicture.src = 'placeholder-pfp.jpg'; }
-     } else {
-        profilePictureOverlay.style.display = 'none';
-     }
-
-    disableSubjectDragging();
-    sortSubjectOptions();
-    // Correct initial display based on CSS for header buttons
-    editButton.style.display = 'inline-flex'; // Match CSS rule
-    saveButton.style.display = 'none';
-  }
-
-  window.onload = initializeProfile;
-
-</script>
+<script src="script.js" defer></script>
 </body>
 </html>

@@ -5,207 +5,72 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Profile Editor</title>
   <style>
+    /* ===== Base Styles (Adapted from previous) ===== */
     :root {
-      font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
-      line-height: 1.5;
-      font-weight: 400;
-
-      color-scheme: light dark;
-      color: black; /* Default text color */
-      background-color: white;
-
-      font-synthesis: none;
-      text-rendering: optimizeLegibility;
-      -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
-      -webkit-text-size-adjust: 100%;
+        /* Define base font size if needed, e.g., font-size: 16px; */
     }
-
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
+    * { /* Apply box-sizing globally */
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
     }
-
     body {
-      margin: 0;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      min-width: 320px;
-      min-height: 100vh;
-      padding: 20px; /* Add some padding around the content */
-    }
-
-    h1 {
-      font-size: 2.2em;
-      line-height: 1.1;
-      margin-bottom: 20px; /* Add some space below the title */
-      background-color: #ff33f6; /* Pink background for header */
-      color: white; /* White text on pink background */
-      padding: 10px 20px; /* Adjusted padding for button */
-      border-radius: 5px;
-      position: relative; /* Required for absolute positioning of the button */
-      width: 100%; /* Make header take full width */
-      max-width: 600px; /* Consistent with #root max-width */
-      text-align: center; /* Center the title text */
-    }
-
-    /* Edit Button Styling */
-    #editButton {
-      position: absolute;
-      top: 50%; /* Center vertically */
-      transform: translateY(-50%); /* Adjust vertical centering */
-      right: 15px; /* Adjust as needed */
-      font-size: 0.8em; /* Smaller font size */
-      padding: 5px 10px; /* Smaller padding */
-      background-color: #5233ff; /* Updated blue background */
-      color: white; /* White text */
-      border-radius: 3px;
-      border: none; /* Remove border */
-      cursor: pointer;
-    }
-
-    /* Save Button Styling */
-    #saveButton {
-      background-color: #5233ff; /* Updated blue background */
-      color: white; /* White text */
-      border-radius: 3px;
-      border: none; /* Remove border */
-      cursor: pointer;
-    }
-
-
-    button {
-      border: none;
-      font-size: 1em;
-      font-weight: 500;
-      font-family: inherit;
-      cursor: pointer;
-      transition: all 0.25s;
-      background-color: #f0f0f0; /* Light grey button background */
-      padding: 10px 20px;
-      border-radius: 5px;
-      margin-top: 10px; /*Added to create separation*/
-    }
-
-    button:focus,
-    button:focus-visible {
-      outline: 4px auto -webkit-focus-ring-color;
-    }
-
-    a {
-      font-weight: 500;
-      color: #ff33f6; /* Keep link color pink */
-      text-decoration: inherit;
-    }
-
-    a:hover {
-      color: #d02bc6;
-    }
-
-    input:focus,
-    textarea:focus {
-      outline: none;
-      border-color: #ff33f6;
-    }
-
-    input,
-    textarea {
-      background-color: white;  /*Enables text color and the ability to see the cursor*/
-      cursor: auto;              /*Enables text color and the ability to see the cursor*/
-      color: black; /* forces text to be black */
-    }
-
-    input:disabled,
-    textarea:disabled {
-      background-color: #eee; /* Light gray for disabled inputs */
-      cursor: not-allowed;
-      color: black; /* Ensure text is readable when disabled */
-    }
-
-    input:disabled::placeholder,
-    textarea:disabled::placeholder {
-      color: #888; /*  Gray placeholder text when disabled */
-    }
-
-    ul,
-    ol {
-      list-style-position: inside;
-    }
-
-    /* For smooth scrolling */
-    html {
-      scroll-behavior: smooth;
-    }
-
-    /* For responsive width */
-    #root {
-      width: 100%;
-      max-width: 600px; /* Limit width for better readability */
-      display: flex; /* Use flexbox for centering items */
-      flex-direction: column; /* Stack children vertically */
-      align-items: center; /* Center children horizontally */
-    }
-
-    /* Remove default styling for some elements */
-    ul {
-      list-style: none;
-    }
-
-    .profile-container {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
+      font-family: Arial, sans-serif;
+      line-height: 1.6;
+      /* margin: 0; */ /* Handled by * reset */
       padding: 20px;
-      border: 1px solid #ccc;
-      border-radius: 8px;
-      margin-bottom: 20px; /* Add space below profile container */
-      width: 100%; /* Make profile container take full width */
-    }
-
-    .profile-picture-container {
-      position: relative;
-      width: 150px;
-      height: 150px;
-      margin-bottom: 10px;
-    }
-
-
-    .profile-picture {
-      width: 100%;
-      height: 100%;
-      border-radius: 50%;
-      object-fit: cover;
-      border: 2px solid #ff33f6; /* Add a border to the profile picture */
-      position: absolute;
-      top: 0;
-      left: 0;
-      z-index: 1; /* Ensure the image is above the overlay */
-    }
-
-    .profile-picture-overlay {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      border-radius: 50%;
-      background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent white overlay */
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-weight: bold;
-      color: #555;
-      text-align: center;
-      z-index: 2; /* Ensure the overlay is above the image */
-      pointer-events: none; /* Allow drops on the container */
-    }
-
-    .profile-picture-container.dragover .profile-picture-overlay {
-      background-color: rgba(200, 200, 200, 0.8); /* Change background color on dragover */
       color: #333;
+      background-color: #f0f0f0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    #root {
+      max-width: 800px;
+      width: 100%;
+      margin: 0 auto;
+    }
+
+    /* ===== Header (H1) Styling ===== */
+    /* The header (h1) and profile-container naturally have the same width
+       because they are both direct children of #root which defines the max-width */
+    h1 {
+      background: linear-gradient(to right, rgb(225, 231, 114), rgb(111, 227, 111), rgb(77, 64, 221));
+      color: rgb(19, 6, 118);
+      padding: 0.8rem 15px;
+      border-radius: 10px;
+      margin: 0 0 20px 0; /* Reset margin */
+      font-size: 2.0em; /* Slightly adjust size if needed */
+      line-height: 1.2;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    h1 > span {
+        flex-grow: 1;
+    }
+
+    .header-buttons {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-shrink: 0;
+    }
+
+    /* Profile container */
+    .profile-container {
+      margin-bottom: 30px;
+      padding: 20px;
+      background-color: #f9f9f9;
+      border-radius: 5px;
+      border: none;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100%; /* Takes width from #root */
     }
 
     .input-group {
@@ -213,168 +78,253 @@
       width: 100%;
     }
 
-    .input-group label {
-      display: block;
-      margin-bottom: 5px;
-      font-weight: bold;
-      color: #ff33f6;
-      background-color: #ff33f6; /* Pink background for label */
-      color: white; /* White text on pink background */
-      padding: 5px;
-      border-radius: 3px;
+    /* Gradient Styling for Labels and Subject Container */
+    label[for="username"],
+    label[for="description"],
+    .subject-interest-label,
+    .subject-interest-container {
+        background: linear-gradient(to right, rgb(225, 231, 114), rgb(111, 227, 111), rgb(77, 64, 221));
+        color: white;
+        padding: 8px 12px;
+        border-radius: 5px;
+        font-weight: bold;
+        display: block;
+        margin-bottom: 5px;
+        width: 100%; /* Explicitly set width for clarity */
     }
 
-    .input-group input,
-    .input-group textarea {
-      width: 100%;
+    .subject-interest-label {
+        text-align: center;
+        margin-bottom: 10px;
+    }
+
+    .subject-interest-container {
+        margin-bottom: 20px;
+        min-height: 70px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        border: none;
+        padding: 10px;
+    }
+
+    /* ===== Input Styling ===== */
+    /* Input/Textarea width matches label width due to width: 100% and box-sizing */
+    input[type="text"], /* Be more specific */
+    textarea {
+      width: 100%; /* Takes full width of .input-group */
       padding: 8px;
       border: 1px solid #ccc;
       border-radius: 4px;
       font-size: 1em;
-      color: black; /* default to black text */
+      background-color: white;
+      color: black;
+      cursor: auto;
+      /* margin-top: 0; */ /* Reset handled by * */
+      display: block; /* Ensure they behave as blocks */
+    }
+    input:focus,
+    textarea:focus {
+      outline: none;
+      border-color: #3a33ff;
+    }
+    input:disabled,
+    textarea:disabled {
+      background-color: #eee;
+      cursor: not-allowed;
+      color: #555;
+    }
+    textarea {
+       resize: vertical;
+       min-height: 100px;
     }
 
-    .input-group textarea {
-      resize: vertical;
-      min-height: 100px;
+    /* Link styling (General - applies to Home button base) */
+    a {
+      color: #3a33ff;
+      text-decoration: none;
+    }
+    a:hover {
+      text-decoration: underline;
     }
 
-    #profilePictureInput {
-      display: none; /* Hide the file input */
+    /* Button Styling (General - for Save button mostly) */
+     button {
+        border: none;
+        font-size: 1em;
+        font-weight: 500;
+        font-family: inherit; /* Inherit from body */
+        cursor: pointer;
+        transition: all 0.25s;
+        background-color: #e0e0e0;
+        color: #333;
+        padding: 10px 20px;
+        border-radius: 5px;
+        margin-top: 10px;
+      }
+      button:hover {
+        background-color: #c7c7c7;
+      }
+      button:focus,
+      button:focus-visible {
+        outline: 2px auto #3a33ff;
+        outline-offset: 2px;
+      }
+
+
+    /* ===== Button Sizing & Font Matching (Home & Edit) ===== */
+    #homeButton,
+    #editButton {
+      font-size: 0.8em;      /* SAME Font Size */
+      padding: 5px 10px;     /* SAME Padding */
+      border-radius: 3px;
+      border: none;
+      margin: 0;
+      font-family: inherit;  /* SAME Font Family (Inherited) */
+      line-height: 1.3;      /* SAME Line Height for vertical consistency */
+      display: inline-flex;  /* Use flex for alignment if content varies */
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      cursor: pointer;
+      transition: background-color 0.25s; /* Keep transition */
     }
 
-    /* Subject Interest Section */
-    .subject-interest-container {
-      width: 100%;
+    /* Specific background/color for Edit Button */
+    #editButton {
+      background-color: #5233ff;
+      color: white;
+    }
+     #editButton:hover {
+         background-color: #4128cc;
+         color: white; /* Ensure hover color remains */
+     }
+
+    /* Specific background/color for Home Button */
+    #homeButton {
+      background-color: #262fd9;
+      color: white;
+      text-decoration: none; /* Override general link styles */
+    }
+    #homeButton:hover {
+      text-decoration: none; /* Override general link styles */
+      background-color: #a8e026;
+      color: white;
+    }
+    #homeButton:focus { /* Keep specific focus style if desired */
+        outline: none;
+        box-shadow: 0 0 5px #333dff;
+    }
+    /* ==================================================== */
+
+    /* Save Button Styling */
+    #saveButton {
+      background-color: #5233ff;
+      color: white;
+      border-radius: 3px;
+      border: none;
+      padding: 10px 20px;
+      font-size: 1em;
+      margin-top: 15px;
+    }
+     #saveButton:hover {
+         background-color: #4128cc;
+     }
+
+    /* Profile Picture */
+    .profile-picture-container {
+      position: relative;
+      width: 150px;
+      height: 150px;
       margin-bottom: 20px;
-      border: 1px dashed #ccc;
-      padding: 10px;
-      min-height: 50px; /* Make sure it's visible even when empty */
+    }
+    .profile-picture {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid #7c0e77;
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 1;
+    }
+    .profile-picture-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      background-color: rgba(255, 255, 255, 0.8);
       display: flex;
+      justify-content: center;
+      align-items: center;
+      font-weight: bold;
+      color: #555;
+      text-align: center;
+      z-index: 2;
+      pointer-events: none;
+      font-size: 0.9em;
+    }
+     .profile-picture-container.dragover .profile-picture-overlay {
+        background-color: rgba(200, 200, 200, 0.8);
+        color: #333;
+      }
+      #profilePictureInput {
+        display: none;
+      }
+
+    /* Subject Interest Options Area */
+    .subject-options {
+      display: none;
       flex-wrap: wrap;
       gap: 5px;
+      margin-bottom: 10px;
+      padding: 10px;
+      background-color: #e9e9e9;
+      border-radius: 4px;
     }
-
+    /* Subject Blocks */
     .subject-block {
-      background-color: #5233ff; /* Updated blue background */
+      background-color: #5233ff;
       color: white;
       padding: 5px 10px;
       border-radius: 3px;
       cursor: grab;
       user-select: none;
+      font-size: 0.9em;
+    }
+    .subject-block.dragging {
+       opacity: 0.5;
+    }
+    .subject-interest-container.drag-over,
+    .subject-options.drag-over {
+        outline: 2px dashed #3a33ff;
+        background-color: #f0f5ff;
     }
 
-    .subject-options {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 5px;
-      margin-bottom: 10px;
-      display: none; /* Hide subject options initially */
+    /* Hide file input */
+    #profilePictureInput {
+      display: none;
     }
 
-    .subject-options .subject-block {
-      background-color: #5233ff; /* Updated blue background */
-      color: white;
-      cursor: grab;
-    }
-
-    .subject-interest-label {
-      display: block;
-      margin-bottom: 5px;
-      font-weight: bold;
-      color: #ff33f6;
-      background-color: #ff33f6; /* Pink background for label */
-      color: white; /* White text on pink background */
-      padding: 5px;
-      border-radius: 3px;
-      width: 100%;
-      text-align: center;
-    }
-
-    /* Home Button Styling */
-    #homeButton {
-      display: inline-block; /* Allows padding/margin and looks like a button */
-      margin-top: 20px; /* Space above the button */
-      padding: 10px 20px;
-      background-color: #5233ff; /* Consistent blue */
-      color: white;
-      text-decoration: none; /* Remove underline */
-      border-radius: 5px;
-      font-size: 1em;
-      font-weight: 500;
-      font-family: inherit;
-      cursor: pointer;
-      transition: all 0.25s;
-      border: none; /* Match other buttons */
-    }
-
-    #homeButton:hover {
-        background-color: #4128cc; /* Slightly darker blue on hover */
-        color: white; /* Ensure text remains white */
-    }
-
-    #homeButton:focus,
-    #homeButton:focus-visible {
-      outline: 4px auto -webkit-focus-ring-color;
-    }
-
-    /* Dark mode adjustments - not active by default */
-    @media (prefers-color-scheme: dark) {
-      :root {
-        color: rgba(255, 255, 255, 0.87);
-        background-color: white;
-      }
-
-      a:hover {
-        color: #ff6af2;
-      }
-
-      button, #homeButton /* Apply dark mode button styles to home link */ {
-        background-color: #5233ff;
-        color: rgba(255, 255, 255, 0.87);
-      }
-
-       #homeButton:hover {
-          background-color: #6a5afa; /* Lighter blue hover for dark mode */
-      }
-
-      .profile-container {
-        border-color: white;
-      }
-
-      .input-group input,
-      .input-group textarea {
-        background-color: white;
-        color: rgba(255, 255, 255, 0.87);
-        border-color: white;
-      }
-
-      h1 {
-        background-color: #ff6af2; /* Slightly lighter pink in dark mode */
-      }
-
-      .input-group label {
-        background-color: #ff6af2; /* Slightly lighter pink in dark mode */
-      }
-
-      input:disabled,
-      textarea:disabled {
-        background-color: white;
-        color: #888;
-      }
-    }
   </style>
 </head>
 <body>
 <div id="root">
-  <h1>Profile
-    <button id="editButton">Edit Profile</button>
+  <h1>
+    <span>Profile</span>
+    <div class="header-buttons">
+      <a href="https://kathy20316.github.io/EducationOrder/" id="homeButton">Home</a>
+      <button id="editButton">Edit Profile</button>
+    </div>
   </h1>
 
   <div class="profile-container">
     <div class="profile-picture-container">
       <img src="placeholder-pfp.jpg" alt="Profile Picture" class="profile-picture" id="profilePicture">
-      <div class="profile-picture-overlay">Drag & Drop Image Here</div>
+      <div class="profile-picture-overlay">Click or Drag & Drop</div>
     </div>
     <input type="file" id="profilePictureInput" accept="image/*">
 
@@ -391,8 +341,9 @@
 
 
     <div class="input-group">
-      <label class="subject-interest-label">Subject Interests:</label>
+      <label class="subject-interest-label">Subject Interests (Drag & Drop)</label>
       <div class="subject-options" id="subjectOptions">
+        <!-- Subject options populated by JS or hardcoded -->
         <div class="subject-block" draggable="true" data-subject="Mathematics">Mathematics</div>
         <div class="subject-block" draggable="true" data-subject="Science">Science</div>
         <div class="subject-block" draggable="true" data-subject="History">History</div>
@@ -410,306 +361,13 @@
         <div class="subject-block" draggable="true" data-subject="Law">Law</div>
       </div>
       <div class="subject-interest-container" id="subjectInterestContainer">
-        <!-- Existing Subject Blocks Will Go Here -->
+        <!-- Subject blocks will appear here when dragged -->
       </div>
     </div>
 
-    <button id="saveButton" style="display: none;">Save Changes</button> <!-- Initially hidden -->
+    <button id="saveButton" style="display: none;">Save Changes</button>
   </div>
 
-  <!-- Back to Home Button -->
-  <a href="https://kathy20316.github.io/EducationOrder/" id="homeButton">Back to Home</a>
-
 </div>
-
-<script>
-  const editButton = document.getElementById('editButton');
-  const saveButton = document.getElementById('saveButton');
-  const usernameInput = document.getElementById('username');
-  const descriptionTextarea = document.getElementById('description');
-  const profilePicture = document.getElementById('profilePicture');
-  const profilePictureInput = document.getElementById('profilePictureInput');
-  const profilePictureContainer = document.querySelector('.profile-picture-container');
-  const profilePictureOverlay = document.querySelector('.profile-picture-overlay');
-  const subjectOptions = document.getElementById('subjectOptions');
-  const subjectInterestContainer = document.getElementById('subjectInterestContainer');
-
-  let isEditing = false; // Track editing state
-
-  //Initialize saved interests (example, you might load this from storage)
-  let savedInterests = ["Mathematics", "Computer Science"]; // Example pre-selected interests
-
-  editButton.addEventListener('click', () => {
-    isEditing = true;
-    usernameInput.disabled = false;
-    descriptionTextarea.disabled = false;
-    subjectOptions.style.display = 'flex';
-
-    //Force Text to be visible on edit
-    usernameInput.style.color = "black";
-    descriptionTextarea.style.color = "black";
-
-    editButton.style.display = 'none'; // Hide the edit button
-    saveButton.style.display = 'block'; // Show the save button
-
-    // Enable drag and drop and programmatic click on edit
-    profilePictureContainer.addEventListener('click', triggerFileInput);
-    profilePictureContainer.classList.add('editable');
-    profilePictureOverlay.textContent = 'Click or Drag & Drop'; // Update overlay text
-
-    // Enable dragging on subject options
-    enableSubjectDragging();
-  });
-
-  saveButton.addEventListener('click', () => {
-    const username = usernameInput.value;
-    const description = descriptionTextarea.value;
-    let isValid = true;
-    let errorMessage = "";
-
-    // Username validation
-    const specialCharRegex = /[!@#$%^&*()+\-=\[\]{};':"\\|,.<>\/?\s]/; // Regex to check for special characters
-
-    if (specialCharRegex.test(username)) {
-      isValid = false;
-      errorMessage += "Username should not contain special characters or spaces. ";
-      usernameInput.style.borderColor = "red"; // Indicate error with border
-    } else {
-      usernameInput.style.borderColor = "#ccc"; // Reset border color
-    }
-
-    // Description validation
-    const wordCount = description.trim().split(/\s+/).filter(Boolean).length; // splits on whitespace and counts words (filters out empty strings)
-    if (wordCount > 75) {
-      isValid = false;
-      errorMessage += "Description should be 75 words or less.";
-      descriptionTextarea.style.borderColor = "red"; // Indicate error with border
-    } else {
-      descriptionTextarea.style.borderColor = "#ccc"; // Reset border color
-    }
-
-    if (!isValid) {
-      alert(errorMessage.trim());  // Display the error message
-      return; // Prevent saving if validation fails
-    }
-
-    // If validation passes, proceed with saving
-
-    isEditing = false;
-    usernameInput.disabled = true;
-    descriptionTextarea.disabled = true;
-    subjectOptions.style.display = 'none';
-
-    // Ensure text is visible on save (reset potential error colors)
-    usernameInput.style.color = "black";
-    descriptionTextarea.style.color = "black";
-    usernameInput.style.borderColor = "#ccc"; // Ensure border is reset
-    descriptionTextarea.style.borderColor = "#ccc"; // Ensure border is reset
-
-
-    editButton.style.display = 'block'; // Show the edit button
-    saveButton.style.display = 'none'; // Hide the save button
-
-    // Disable drag and drop and programmatic click on save
-    profilePictureContainer.removeEventListener('click', triggerFileInput);
-    profilePictureContainer.classList.remove('editable');
-    profilePictureOverlay.textContent = 'Drag & Drop Image Here'; // Reset overlay text
-
-    // Save all dragged elements
-    savedInterests = Array.from(subjectInterestContainer.children).map(item => item.dataset.subject);
-
-    // In a real application, you would now save the changes (username, description, profile pic data, savedInterests)
-    // to a server or local storage.
-    console.log("Saving data:", {
-      username: username,
-      description: description,
-      interests: savedInterests,
-      // profilePicSrc: profilePicture.src // You might save the base64 string or handle file upload separately
-    });
-
-    alert('Changes saved!');
-
-    //Disable dragging
-    disableSubjectDragging();
-  });
-
-  function triggerFileInput() {
-    if (!isEditing) return; // Only trigger if editing
-    profilePictureInput.click();
-  }
-
-  profilePictureInput.addEventListener('change', (event) => {
-    handleImageUpload(event);
-  });
-
-  // Drag and Drop Functionality for Profile Picture
-  profilePictureContainer.addEventListener('dragover', (e) => {
-    if (!isEditing) return; // Only allow dragover if editing
-    e.preventDefault();  // Allow the drop
-    profilePictureContainer.classList.add('dragover');
-  });
-
-  profilePictureContainer.addEventListener('dragleave', (e) => {
-    if (!isEditing) return;
-    profilePictureContainer.classList.remove('dragover');
-  });
-
-
-  profilePictureContainer.addEventListener('drop', (e) => {
-    if (!isEditing) return; // Only allow drop if editing
-    e.preventDefault();
-    profilePictureContainer.classList.remove('dragover');
-
-    const file = e.dataTransfer.files[0];
-    if (file && file.type.startsWith('image/')) {
-      handleFile(file);
-    }
-  });
-
-  function handleFile(file) {
-    const reader = new FileReader();
-
-    reader.onload = (e) => {
-      profilePicture.src = e.target.result; // Update the image source with the chosen file
-      profilePictureOverlay.style.display = 'none'; // Hide the overlay when image is present.
-    };
-
-    reader.readAsDataURL(file); // Read the file as a data URL
-  }
-
-  function handleImageUpload(event) {
-    const file = event.target.files[0];
-
-    if (file && file.type.startsWith('image/')) {
-      handleFile(file); // Reuse the handleFile function
-    }
-  }
-
-  // Subject Interest Drag and Drop
-  let draggedSubject = null;
-
-  function enableSubjectDragging() {
-    const subjectBlocks = document.querySelectorAll('#subjectOptions .subject-block, #subjectInterestContainer .subject-block');
-    subjectBlocks.forEach(block => {
-      block.draggable = true;
-      block.addEventListener('dragstart', dragStart);
-      block.addEventListener('dragend', dragEnd);
-    });
-
-    subjectInterestContainer.addEventListener('dragover', dragOver);
-    subjectInterestContainer.addEventListener('drop', dropOnInterestContainer);
-    subjectInterestContainer.addEventListener('dragenter', dragEnter);
-    subjectInterestContainer.addEventListener('dragleave', dragLeave);
-
-    subjectOptions.addEventListener('dragover', dragOver);
-    subjectOptions.addEventListener('drop', dropOnOptionsContainer);
-    subjectOptions.addEventListener('dragenter', dragEnter);
-    subjectOptions.addEventListener('dragleave', dragLeave);
-  }
-
-  function disableSubjectDragging() {
-    const subjectBlocks = document.querySelectorAll('#subjectOptions .subject-block, #subjectInterestContainer .subject-block');
-    subjectBlocks.forEach(block => {
-      block.draggable = false; // Set draggable to false
-      // Clean up listeners - more robustly remove the specific functions
-      block.removeEventListener('dragstart', dragStart);
-      block.removeEventListener('dragend', dragEnd);
-    });
-    // Clean up container listeners
-    subjectInterestContainer.removeEventListener('dragover', dragOver);
-    subjectInterestContainer.removeEventListener('drop', dropOnInterestContainer);
-    subjectInterestContainer.removeEventListener('dragenter', dragEnter);
-    subjectInterestContainer.removeEventListener('dragleave', dragLeave);
-
-    subjectOptions.removeEventListener('dragover', dragOver);
-    subjectOptions.removeEventListener('drop', dropOnOptionsContainer);
-    subjectOptions.removeEventListener('dragenter', dragEnter);
-    subjectOptions.removeEventListener('dragleave', dragLeave);
-  }
-
-
-  function dragStart(event) {
-    // Check if the event target has the 'subject-block' class
-    if (!event.target.classList.contains('subject-block')) return;
-    draggedSubject = event.target;
-    // Use a unique identifier if subjects could have same names (though here data-subject is likely unique)
-    event.dataTransfer.setData('text/plain', event.target.dataset.subject);
-    event.dataTransfer.effectAllowed = 'move';
-    // Add dragging style slightly delayed to ensure it's applied
-    setTimeout(() => event.target.classList.add('dragging'), 0);
-  }
-
-  function dragEnd(event) {
-    // Check if the event target has the 'subject-block' class
-    if (!event.target.classList.contains('subject-block')) return;
-    event.target.classList.remove('dragging');
-    // Clear visual feedback on containers
-    subjectInterestContainer.classList.remove('drag-over');
-    subjectOptions.classList.remove('drag-over');
-    draggedSubject = null;
-  }
-
-  function dragOver(event) {
-    event.preventDefault(); // Necessary to allow dropping
-     event.dataTransfer.dropEffect = 'move';
-  }
-
-  function dragEnter(event) {
-    event.preventDefault();
-    // Only add class if the target is one of the valid drop zones
-    if (event.target === subjectInterestContainer || event.target === subjectOptions) {
-       event.target.classList.add('drag-over');
-    }
-  }
-
-  function dragLeave(event) {
-     // Only remove class if leaving one of the valid drop zones
-     if (event.target === subjectInterestContainer || event.target === subjectOptions) {
-        event.target.classList.remove('drag-over');
-     }
-  }
-
-  function dropOnInterestContainer(event) {
-    event.preventDefault();
-    subjectInterestContainer.classList.remove('drag-over');
-    if (draggedSubject && draggedSubject.parentElement !== subjectInterestContainer) {
-        subjectInterestContainer.appendChild(draggedSubject);
-    }
-  }
-
- function dropOnOptionsContainer(event) {
-    event.preventDefault();
-    subjectOptions.classList.remove('drag-over');
-     if (draggedSubject && draggedSubject.parentElement !== subjectOptions) {
-        // Optional: sort options alphabetically or keep original order
-        subjectOptions.appendChild(draggedSubject);
-    }
- }
-
-
-  //Set Initial List on Page Load
-  function initializeProfile() {
-     // Move pre-selected interests to the container
-    savedInterests.forEach(interest => {
-      const block = subjectOptions.querySelector(`.subject-block[data-subject="${interest}"]`);
-      if(block){ // Check if the block exists in options
-        subjectInterestContainer.appendChild(block);
-      }
-    });
-
-     // Check if profile picture src is placeholder, if so, show overlay
-     if (profilePicture.src.includes('placeholder-pfp.jpg')) {
-        profilePictureOverlay.style.display = 'flex';
-     } else {
-        profilePictureOverlay.style.display = 'none';
-     }
-
-    // Initially disable dragging
-    disableSubjectDragging();
-  }
-
-  window.onload = initializeProfile; // Run initialization when the page loads
-
-</script>
 </body>
 </html>
