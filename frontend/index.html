@@ -12,21 +12,17 @@
     <span>Profile</span>
     <div class="header-buttons">
       <a href="https://kathy20316.github.io/EducationOrder/" id="homeButton">Home</a>
-      <button id="editButton">Edit Profile</button>
+      <button id="editButton">Edit Profile</button> <!-- This button will toggle -->
     </div>
   </h1>
 
   <div class="profile-container">
     <div class="profile-picture-container">
-      <!-- Image remains the primary element for display -->
-      <img src="placeholder-pfp.jpg" alt="Profile Picture" class="profile-picture" id="profilePicture">
-      <!-- Overlay will show 'Click to Change' or be hidden -->
+      <img src="smartypants.jpg" alt="Profile Picture" class="profile-picture" id="profilePicture">
       <div class="profile-picture-overlay"></div>
     </div>
-    <!-- Hidden file input remains the same -->
     <input type="file" id="profilePictureInput" accept="image/*">
 
-    <!-- Input groups remain the same -->
     <div class="input-group">
       <label for="username">Username:</label>
       <input type="text" id="username" name="username" value="YourUsername" disabled>
@@ -59,23 +55,23 @@
         <!-- Subject blocks will appear here when dragged -->
       </div>
     </div>
-    <button id="saveButton" style="display: none;">Save Changes</button>
+
+    <!-- REMOVED the separate save button -->
+    <!-- <button id="saveButton" style="display: none;">Save Changes</button> -->
+
   </div>
 
-  <!-- ======================= -->
-  <!-- == PFP Modal Section == -->
-  <!-- ======================= -->
-  <div id="modalOverlay"></div> <!-- Background overlay -->
+  <!-- PFP Modal Section (Keep as is) -->
+  <div id="modalOverlay"></div>
   <div id="pfpModal">
     <button class="modal-close" id="modalCloseButton" aria-label="Close modal">×</button>
     <div id="modalTitle">Update Profile Picture</div>
-    <div id="modalMessage"></div> <!-- Optional message area -->
+    <div id="modalMessage"></div>
     <div class="modal-buttons">
       <button id="modalChooseFileButton" class="modal-button">Choose File</button>
       <button id="modalDragDropButton" class="modal-button">Drag & Drop</button>
     </div>
   </div>
-  <!-- ======================= -->
 
 </div>
 
