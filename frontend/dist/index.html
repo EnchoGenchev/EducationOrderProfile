@@ -44,16 +44,20 @@
       margin-bottom: 20px; /* Add some space below the title */
       background-color: #ff33f6; /* Pink background for header */
       color: white; /* White text on pink background */
-      padding: 10px;
+      padding: 10px 20px; /* Adjusted padding for button */
       border-radius: 5px;
       position: relative; /* Required for absolute positioning of the button */
+      width: 100%; /* Make header take full width */
+      max-width: 600px; /* Consistent with #root max-width */
+      text-align: center; /* Center the title text */
     }
 
     /* Edit Button Styling */
     #editButton {
       position: absolute;
-      top: 10px; /* Adjust as needed */
-      right: 10px; /* Adjust as needed */
+      top: 50%; /* Center vertically */
+      transform: translateY(-50%); /* Adjust vertical centering */
+      right: 15px; /* Adjust as needed */
       font-size: 0.8em; /* Smaller font size */
       padding: 5px 10px; /* Smaller padding */
       background-color: #5233ff; /* Updated blue background */
@@ -140,6 +144,9 @@
     #root {
       width: 100%;
       max-width: 600px; /* Limit width for better readability */
+      display: flex; /* Use flexbox for centering items */
+      flex-direction: column; /* Stack children vertically */
+      align-items: center; /* Center children horizontally */
     }
 
     /* Remove default styling for some elements */
@@ -155,6 +162,7 @@
       border: 1px solid #ccc;
       border-radius: 8px;
       margin-bottom: 20px; /* Add space below profile container */
+      width: 100%; /* Make profile container take full width */
     }
 
     .profile-picture-container {
@@ -283,6 +291,33 @@
       text-align: center;
     }
 
+    /* Home Button Styling */
+    #homeButton {
+      display: inline-block; /* Allows padding/margin and looks like a button */
+      margin-top: 20px; /* Space above the button */
+      padding: 10px 20px;
+      background-color: #5233ff; /* Consistent blue */
+      color: white;
+      text-decoration: none; /* Remove underline */
+      border-radius: 5px;
+      font-size: 1em;
+      font-weight: 500;
+      font-family: inherit;
+      cursor: pointer;
+      transition: all 0.25s;
+      border: none; /* Match other buttons */
+    }
+
+    #homeButton:hover {
+        background-color: #4128cc; /* Slightly darker blue on hover */
+        color: white; /* Ensure text remains white */
+    }
+
+    #homeButton:focus,
+    #homeButton:focus-visible {
+      outline: 4px auto -webkit-focus-ring-color;
+    }
+
     /* Dark mode adjustments - not active by default */
     @media (prefers-color-scheme: dark) {
       :root {
@@ -294,9 +329,13 @@
         color: #ff6af2;
       }
 
-      button {
+      button, #homeButton /* Apply dark mode button styles to home link */ {
         background-color: #5233ff;
         color: rgba(255, 255, 255, 0.87);
+      }
+
+       #homeButton:hover {
+          background-color: #6a5afa; /* Lighter blue hover for dark mode */
       }
 
       .profile-container {
@@ -377,6 +416,10 @@
 
     <button id="saveButton" style="display: none;">Save Changes</button> <!-- Initially hidden -->
   </div>
+
+  <!-- Back to Home Button -->
+  <a href="https://kathy20316.github.io/EducationOrder/" id="homeButton">Back to Home</a>
+
 </div>
 
 <script>
@@ -393,8 +436,8 @@
 
   let isEditing = false; // Track editing state
 
-  //Initialize saved interests
-  let savedInterests = [];
+  //Initialize saved interests (example, you might load this from storage)
+  let savedInterests = ["Mathematics", "Computer Science"]; // Example pre-selected interests
 
   editButton.addEventListener('click', () => {
     isEditing = true;
@@ -412,6 +455,7 @@
     // Enable drag and drop and programmatic click on edit
     profilePictureContainer.addEventListener('click', triggerFileInput);
     profilePictureContainer.classList.add('editable');
+    profilePictureOverlay.textContent = 'Click or Drag & Drop'; // Update overlay text
 
     // Enable dragging on subject options
     enableSubjectDragging();
@@ -428,24 +472,24 @@
 
     if (specialCharRegex.test(username)) {
       isValid = false;
-      errorMessage += "Username should not contain special characters.  ";
-      usernameInput.style.color = "red";
+      errorMessage += "Username should not contain special characters or spaces. ";
+      usernameInput.style.borderColor = "red"; // Indicate error with border
     } else {
-      usernameInput.style.color = "black"; //reset color in case of previous error
+      usernameInput.style.borderColor = "#ccc"; // Reset border color
     }
 
     // Description validation
-    const wordCount = description.split(/\s+/).filter(Boolean).length; // splits on whitespace and counts words (filters out empty strings)
+    const wordCount = description.trim().split(/\s+/).filter(Boolean).length; // splits on whitespace and counts words (filters out empty strings)
     if (wordCount > 75) {
       isValid = false;
       errorMessage += "Description should be 75 words or less.";
-      descriptionTextarea.style.color = "red";
+      descriptionTextarea.style.borderColor = "red"; // Indicate error with border
     } else {
-      descriptionTextarea.style.color = "black"; //reset color in case of previous error
+      descriptionTextarea.style.borderColor = "#ccc"; // Reset border color
     }
 
     if (!isValid) {
-      alert(errorMessage);  // Display the error message
+      alert(errorMessage.trim());  // Display the error message
       return; // Prevent saving if validation fails
     }
 
@@ -456,9 +500,12 @@
     descriptionTextarea.disabled = true;
     subjectOptions.style.display = 'none';
 
-    //Force Text to be invisible on save
+    // Ensure text is visible on save (reset potential error colors)
     usernameInput.style.color = "black";
     descriptionTextarea.style.color = "black";
+    usernameInput.style.borderColor = "#ccc"; // Ensure border is reset
+    descriptionTextarea.style.borderColor = "#ccc"; // Ensure border is reset
+
 
     editButton.style.display = 'block'; // Show the edit button
     saveButton.style.display = 'none'; // Hide the save button
@@ -466,22 +513,28 @@
     // Disable drag and drop and programmatic click on save
     profilePictureContainer.removeEventListener('click', triggerFileInput);
     profilePictureContainer.classList.remove('editable');
+    profilePictureOverlay.textContent = 'Drag & Drop Image Here'; // Reset overlay text
 
-    // In a real application, you would now save the changes to a server or local storage.
-    // Here, you would also pass the validated username and description to the save function.
+    // Save all dragged elements
+    savedInterests = Array.from(subjectInterestContainer.children).map(item => item.dataset.subject);
 
-    // Example of where you would use the validated values:
-    // saveProfileData(username, description, savedInterests);
+    // In a real application, you would now save the changes (username, description, profile pic data, savedInterests)
+    // to a server or local storage.
+    console.log("Saving data:", {
+      username: username,
+      description: description,
+      interests: savedInterests,
+      // profilePicSrc: profilePicture.src // You might save the base64 string or handle file upload separately
+    });
 
     alert('Changes saved!');
 
     //Disable dragging
     disableSubjectDragging();
-    //Save all dragged elements
-    savedInterests = Array.from(subjectInterestContainer.children).map(item => item.dataset.subject);
   });
 
   function triggerFileInput() {
+    if (!isEditing) return; // Only trigger if editing
     profilePictureInput.click();
   }
 
@@ -489,21 +542,21 @@
     handleImageUpload(event);
   });
 
-  // Drag and Drop Functionality
+  // Drag and Drop Functionality for Profile Picture
   profilePictureContainer.addEventListener('dragover', (e) => {
-    if (!profilePictureContainer.classList.contains('editable')) return;
+    if (!isEditing) return; // Only allow dragover if editing
     e.preventDefault();  // Allow the drop
     profilePictureContainer.classList.add('dragover');
   });
 
   profilePictureContainer.addEventListener('dragleave', (e) => {
-    if (!profilePictureContainer.classList.contains('editable')) return;
+    if (!isEditing) return;
     profilePictureContainer.classList.remove('dragover');
   });
 
 
   profilePictureContainer.addEventListener('drop', (e) => {
-    if (!profilePictureContainer.classList.contains('editable')) return;
+    if (!isEditing) return; // Only allow drop if editing
     e.preventDefault();
     profilePictureContainer.classList.remove('dragover');
 
@@ -527,15 +580,8 @@
   function handleImageUpload(event) {
     const file = event.target.files[0];
 
-    if (file) {
-      const reader = new FileReader();
-
-      reader.onload = (e) => {
-        profilePicture.src = e.target.result; // Update the image source with the chosen file
-        profilePictureOverlay.style.display = 'none'; // Hide the overlay when image is present.
-      };
-
-      reader.readAsDataURL(file); // Read the file as a data URL
+    if (file && file.type.startsWith('image/')) {
+      handleFile(file); // Reuse the handleFile function
     }
   }
 
@@ -543,7 +589,7 @@
   let draggedSubject = null;
 
   function enableSubjectDragging() {
-    const subjectBlocks = document.querySelectorAll('.subject-block');
+    const subjectBlocks = document.querySelectorAll('#subjectOptions .subject-block, #subjectInterestContainer .subject-block');
     subjectBlocks.forEach(block => {
       block.draggable = true;
       block.addEventListener('dragstart', dragStart);
@@ -551,84 +597,118 @@
     });
 
     subjectInterestContainer.addEventListener('dragover', dragOver);
-    subjectInterestContainer.addEventListener('drop', drop);
+    subjectInterestContainer.addEventListener('drop', dropOnInterestContainer);
     subjectInterestContainer.addEventListener('dragenter', dragEnter);
     subjectInterestContainer.addEventListener('dragleave', dragLeave);
+
     subjectOptions.addEventListener('dragover', dragOver);
-    subjectOptions.addEventListener('drop', drop);
+    subjectOptions.addEventListener('drop', dropOnOptionsContainer);
     subjectOptions.addEventListener('dragenter', dragEnter);
     subjectOptions.addEventListener('dragleave', dragLeave);
   }
 
   function disableSubjectDragging() {
-    const subjectBlocks = document.querySelectorAll('.subject-block');
+    const subjectBlocks = document.querySelectorAll('#subjectOptions .subject-block, #subjectInterestContainer .subject-block');
     subjectBlocks.forEach(block => {
-      block.draggable = false;
+      block.draggable = false; // Set draggable to false
+      // Clean up listeners - more robustly remove the specific functions
       block.removeEventListener('dragstart', dragStart);
       block.removeEventListener('dragend', dragEnd);
     });
+    // Clean up container listeners
     subjectInterestContainer.removeEventListener('dragover', dragOver);
-    subjectInterestContainer.removeEventListener('drop', drop);
+    subjectInterestContainer.removeEventListener('drop', dropOnInterestContainer);
     subjectInterestContainer.removeEventListener('dragenter', dragEnter);
     subjectInterestContainer.removeEventListener('dragleave', dragLeave);
+
     subjectOptions.removeEventListener('dragover', dragOver);
-    subjectOptions.addEventListener('drop', drop);
-    subjectOptions.addEventListener('dragenter', dragEnter);
-    subjectOptions.addEventListener('dragleave', dragLeave);
+    subjectOptions.removeEventListener('drop', dropOnOptionsContainer);
+    subjectOptions.removeEventListener('dragenter', dragEnter);
+    subjectOptions.removeEventListener('dragleave', dragLeave);
   }
 
+
   function dragStart(event) {
+    // Check if the event target has the 'subject-block' class
+    if (!event.target.classList.contains('subject-block')) return;
     draggedSubject = event.target;
-    event.dataTransfer.setData('text', event.target.dataset.subject);
-    event.target.classList.add('dragging');
+    // Use a unique identifier if subjects could have same names (though here data-subject is likely unique)
+    event.dataTransfer.setData('text/plain', event.target.dataset.subject);
+    event.dataTransfer.effectAllowed = 'move';
+    // Add dragging style slightly delayed to ensure it's applied
+    setTimeout(() => event.target.classList.add('dragging'), 0);
   }
 
   function dragEnd(event) {
+    // Check if the event target has the 'subject-block' class
+    if (!event.target.classList.contains('subject-block')) return;
     event.target.classList.remove('dragging');
+    // Clear visual feedback on containers
+    subjectInterestContainer.classList.remove('drag-over');
+    subjectOptions.classList.remove('drag-over');
     draggedSubject = null;
   }
 
   function dragOver(event) {
-    event.preventDefault();
+    event.preventDefault(); // Necessary to allow dropping
+     event.dataTransfer.dropEffect = 'move';
   }
 
   function dragEnter(event) {
     event.preventDefault();
-    event.target.classList.add('drag-over');
-  }
-
-  function dragLeave(event) {
-    event.target.classList.remove('drag-over');
-  }
-
-  function drop(event) {
-    event.preventDefault();
-    event.target.classList.remove('drag-over');
-    const data = event.dataTransfer.getData('text');
-    const droppedSubject = document.querySelector(`.subject-block[data-subject="${data}"]`);
-
-    if (event.target === subjectInterestContainer) {
-      // Move to interest container
-      if (droppedSubject && !subjectInterestContainer.contains(droppedSubject)) {
-        subjectInterestContainer.appendChild(droppedSubject);
-      }
-    } else if (event.target === subjectOptions) {
-      //Move to subject container
-      if (droppedSubject && !subjectOptions.contains(droppedSubject)) {
-        subjectOptions.appendChild(droppedSubject);
-      }
+    // Only add class if the target is one of the valid drop zones
+    if (event.target === subjectInterestContainer || event.target === subjectOptions) {
+       event.target.classList.add('drag-over');
     }
   }
 
-  //Set Initial List
-  window.onload = () => {
+  function dragLeave(event) {
+     // Only remove class if leaving one of the valid drop zones
+     if (event.target === subjectInterestContainer || event.target === subjectOptions) {
+        event.target.classList.remove('drag-over');
+     }
+  }
+
+  function dropOnInterestContainer(event) {
+    event.preventDefault();
+    subjectInterestContainer.classList.remove('drag-over');
+    if (draggedSubject && draggedSubject.parentElement !== subjectInterestContainer) {
+        subjectInterestContainer.appendChild(draggedSubject);
+    }
+  }
+
+ function dropOnOptionsContainer(event) {
+    event.preventDefault();
+    subjectOptions.classList.remove('drag-over');
+     if (draggedSubject && draggedSubject.parentElement !== subjectOptions) {
+        // Optional: sort options alphabetically or keep original order
+        subjectOptions.appendChild(draggedSubject);
+    }
+ }
+
+
+  //Set Initial List on Page Load
+  function initializeProfile() {
+     // Move pre-selected interests to the container
     savedInterests.forEach(interest => {
-      const block = document.querySelector(`.subject-block[data-subject="${interest}"]`);
-      if(block && !subjectInterestContainer.contains(block)){
+      const block = subjectOptions.querySelector(`.subject-block[data-subject="${interest}"]`);
+      if(block){ // Check if the block exists in options
         subjectInterestContainer.appendChild(block);
       }
-    })
+    });
+
+     // Check if profile picture src is placeholder, if so, show overlay
+     if (profilePicture.src.includes('placeholder-pfp.jpg')) {
+        profilePictureOverlay.style.display = 'flex';
+     } else {
+        profilePictureOverlay.style.display = 'none';
+     }
+
+    // Initially disable dragging
+    disableSubjectDragging();
   }
+
+  window.onload = initializeProfile; // Run initialization when the page loads
 
 </script>
 </body>

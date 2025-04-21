@@ -10,11 +10,11 @@ body {
     margin: 0 auto;
   }
   header {
-    background-color: #ff33f6;
-    color: white;
-    padding: 20px;
+    background: linear-gradient(to right, rgb(225, 231, 114), rgb(111, 227, 111), rgb(77, 64, 221));
+    color: rgb(19, 6, 118);
+    padding: 1rem;
+    border-radius: 10px;
     text-align: center;
-    margin-bottom: 20px;
   }
   h1 {
     margin: 0;
