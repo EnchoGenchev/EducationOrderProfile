@@ -21,9 +21,13 @@ body {
   align-items: center;
   min-height: 100vh;
 }
-#root { max-width: 800px; width: 100%; margin: 0 auto; }
+#root {
+  max-width: 1200px;
+  width: 100%;
+  margin: 0 auto;
+}
 
-/* ===== Header (H1) Styling ===== */
+/* ===== Header (H1) Styling (Keep Existing) ===== */
 h1 {
   background: linear-gradient(to right, rgb(225, 231, 114), rgb(111, 227, 111), rgb(77, 64, 221));
   color: rgb(19, 6, 118);
@@ -39,132 +43,195 @@ h1 {
 h1 > span { flex-grow: 1; }
 .header-buttons { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
 
-/* Profile container */
+/* ===== Main Content Area Layout (2 Columns) ===== */
+#main-content-area {
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+  width: 100%;
+}
+
+/* Profile container (LEFT COLUMN) */
 .profile-container {
-  margin-bottom: 30px; padding: 20px; background-color: #f9f9f9;
-  border-radius: 5px; border: none; display: flex; flex-direction: column;
-  align-items: center; width: 100%;
+  flex: 2;
+  max-width: 700px;
+  margin-bottom: 0;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 5px;
+  border: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
 }
+
+/* ===== Tabbed Widgets Container (RIGHT COLUMN) ===== */
+#tabbed-widgets {
+  flex: 1;
+  min-width: 280px;
+  background-color: #f9f9f9;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* Tab Navigation Styling */
+.widget-tab-nav {
+  display: flex;
+  background-color: #e9e9e9;
+  border-bottom: 1px solid #ccc;
+}
+.widget-tab-button {
+  flex-grow: 1; padding: 10px 12px; border: none; background-color: transparent; cursor: pointer;
+  text-align: center; font-size: 0.9em; font-weight: 500; color: #555;
+  border-bottom: 3px solid transparent; transition: background-color 0.2s, border-color 0.2s, color 0.2s;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.widget-tab-button:hover { background-color: #f0f0f0; color: #333; }
+.widget-tab-button.active, .widget-tab-button[aria-selected="true"] {
+  color: rgb(19, 6, 118); font-weight: bold;
+  border-image: linear-gradient(to right, rgb(225, 231, 114), rgb(111, 227, 111), rgb(77, 64, 221)) 1;
+  border-width: 0 0 3px 0; border-style: solid;
+}
+
+/* Tab Content Area */
+.widget-tab-content-area { padding: 15px; flex-grow: 1; }
+.widget-tab-content { display: none; font-size: 0.9em; animation: fadeIn 0.3s ease-in-out; }
+.widget-tab-content.active { display: block; }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+/* Styling within tab content (general) */
+.widget-tab-content ul { list-style: none; padding: 0; margin: 0; }
+.widget-tab-content li { padding: 6px 0; border-bottom: 1px solid #eee; }
+.widget-tab-content li:last-child { border-bottom: none; }
+.widget-tab-content p { margin-bottom: 10px; }
+.widget-tab-content .placeholder-text { color: #777; font-style: italic; }
+
+/* ===== Calendar Specific Styles (Keep Existing) ===== */
+.calendar-widget { }
+.calendar-header { display: flex; justify-content: space-between; align-items: center; text-align: center; font-weight: bold; font-size: 1.1em; margin-bottom: 10px; color: rgb(19, 6, 118); }
+.calendar-nav-button { background: none; border: none; font-size: 1.5em; cursor: pointer; color: #555; padding: 0 5px; line-height: 1; }
+.calendar-nav-button:hover { color: #000; }
+#calendar-month-year { flex-grow: 1; }
+.calendar-weekdays { display: grid; grid-template-columns: repeat(7, 1fr); text-align: center; font-size: 0.8em; font-weight: bold; color: #666; margin-bottom: 5px; padding-bottom: 5px; border-bottom: 1px solid #eee; }
+.calendar-days { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; }
+.calendar-day { position: relative; display: flex; justify-content: center; align-items: center; padding: 5px 0; border: 1px solid #eee; border-radius: 3px; font-size: 0.85em; min-height: 30px; aspect-ratio: 1 / 1; cursor: pointer; transition: background-color 0.2s; user-select: none; }
+.calendar-day:not(.empty):hover { background-color: #f0f0f0; }
+.calendar-day.empty { background-color: transparent; border: 1px solid transparent; cursor: default; }
+.calendar-day.today { background: linear-gradient(to bottom right, rgb(111, 227, 111), rgb(77, 64, 221)); color: white; font-weight: bold; border: 1px solid rgb(19, 6, 118); }
+.calendar-day.has-note::after { content: ''; position: absolute; bottom: 3px; left: 50%; transform: translateX(-50%); width: 5px; height: 5px; background-color: #3a33ff; border-radius: 50%; pointer-events: none; }
+.calendar-day.today.has-note::after { background-color: white; }
+
+
+/* ===== Input Group / Labels (Keep Existing) ===== */
 .input-group { margin-bottom: 15px; width: 100%; }
-
-/* Gradient Styling for Labels and Subject Container */
-label[for="username"],
-label[for="description"],
-.subject-interest-label,
-.subject-interest-container {
-    background: linear-gradient(to right, rgb(225, 231, 114), rgb(111, 227, 111), rgb(77, 64, 221));
-    color: white; padding: 8px 12px; border-radius: 5px; font-weight: bold;
-    display: block; margin-bottom: 5px; width: 100%;
-}
+label[for="username"], label[for="description"], .subject-interest-label { background: linear-gradient(to right, rgb(225, 231, 114), rgb(111, 227, 111), rgb(77, 64, 221)); color: white; padding: 8px 12px; border-radius: 5px; font-weight: bold; display: block; margin-bottom: 5px; width: 100%; }
 .subject-interest-label { text-align: center; margin-bottom: 10px; }
-.subject-interest-container {
-    margin-bottom: 20px; min-height: 70px; display: flex; flex-wrap: wrap;
-    gap: 8px; border: none; padding: 10px;
-}
+.subject-interest-container { background: linear-gradient(to right, rgb(225, 231, 114), rgb(111, 227, 111), rgb(77, 64, 221)); margin-bottom: 20px; min-height: 70px; display: flex; flex-wrap: wrap; gap: 8px; border: none; padding: 10px; border-radius: 5px; }
 
-/* ===== Input Styling ===== */
-input[type="text"], textarea {
-  width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;
-  font-size: 1em; background-color: white; color: black; cursor: auto; display: block;
-}
+/* ===== Input Styling (Keep Existing) ===== */
+input[type="text"], textarea { width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px; font-size: 1em; background-color: white; color: black; cursor: auto; display: block; }
 input:focus, textarea:focus { outline: none; border-color: #3a33ff; }
 input:disabled, textarea:disabled { background-color: #eee; cursor: not-allowed; color: #555; }
 textarea { resize: vertical; min-height: 100px; }
 
-/* Link styling */
+/* Link styling (Keep Existing) */
 a { color: #3a33ff; text-decoration: none; }
 a:hover { text-decoration: underline; }
 
-/* Button Styling (General - for other potential buttons) */
- button {
-    border: none; font-size: 1em; font-weight: 500; font-family: inherit;
-    cursor: pointer; transition: all 0.25s; background-color: #e0e0e0;
-    color: #333; padding: 10px 20px; border-radius: 5px; margin-top: 10px;
-  }
-  button:hover { background-color: #c7c7c7; }
-  button:focus, button:focus-visible { outline: 2px auto #3a33ff; outline-offset: 2px; }
+/* Button Styling (Keep Existing General/Header styles, exclude tab/modal/calendar buttons) */
+ button:not(.widget-tab-button):not(.modal-button):not(.modal-close):not(.calendar-nav-button) { border: none; font-size: 1em; font-weight: 500; font-family: inherit; cursor: pointer; transition: all 0.25s; background-color: #e0e0e0; color: #333; padding: 10px 20px; border-radius: 5px; margin-top: 10px; }
+ button:not(.widget-tab-button):not(.modal-button):not(.modal-close):not(.calendar-nav-button):hover { background-color: #c7c7c7; }
+ button:not(.widget-tab-button):not(.modal-button):not(.modal-close):not(.calendar-nav-button):focus,
+ button:not(.widget-tab-button):not(.modal-button):not(.modal-close):not(.calendar-nav-button):focus-visible { outline: 2px auto #3a33ff; outline-offset: 2px; }
 
-/* ===== Header Button Styling (Home & Edit/Save Toggle) ===== */
-#homeButton,
-#editButton { /* Applies to both */
-  font-size: 0.8em; padding: 5px 10px; border-radius: 3px; border: none; margin: 0;
-  font-family: inherit; line-height: 1.3; display: inline-flex; align-items: center;
-  justify-content: center; text-align: center; cursor: pointer;
-  transition: background-color 0.25s;
-}
+/* ===== Header Button Styling (Keep Existing) ===== */
+#homeButton, #editButton { font-size: 0.8em; padding: 5px 10px; border-radius: 3px; border: none; margin: 0; font-family: inherit; line-height: 1.3; display: inline-flex; align-items: center; justify-content: center; text-align: center; cursor: pointer; transition: background-color 0.25s; }
+#editButton { background-color: #262fd9; color: white; }
+#editButton:hover { background-color: #a8e026; color: white; }
+#homeButton { background-color: #262fd9; color: white; text-decoration: none; }
+#homeButton:hover { text-decoration: none; background-color: #a8e026; color: white; }
+#homeButton:focus { outline: none; box-shadow: 0 0 5px #333dff; }
 
-/* Edit/Save Button Specific Appearance */
-#editButton {
-  background-color: #262fd9; /* Blue for both Edit and Save states */
-  color: white;
+/* ===== Profile Picture Styles (Updated) ===== */
+.profile-picture-container {
+    position: relative; width: 150px; height: 150px;
+    margin-bottom: 20px; cursor: default; flex-shrink: 0;
+    border-radius: 50%; /* Make container round */
+    overflow: hidden; /* Hide corners of image */
+    border: 2px solid #7c0e77; /* Keep border */
 }
- #editButton:hover {
-     background-color: #a8e026; /* Darker blue hover */
-     color: white;
- }
-
-/* Home Button Specific Appearance */
-#homeButton {
-  background-color: #262fd9;
-  color: white;
-  text-decoration: none;
-}
-#homeButton:hover {
-  text-decoration: none;
-  background-color: #a8e026; /* Green hover */
-  color: white;
-}
-#homeButton:focus {
-    outline: none;
-    box-shadow: 0 0 5px #333dff;
-}
-
-/* REMOVED #saveButton styles */
-/* #saveButton { ... } */
-/* #saveButton:hover { ... } */
-
-/* Profile Picture Styles (Keep Existing) */
-.profile-picture-container { position: relative; width: 150px; height: 150px; margin-bottom: 20px; cursor: default; }
 .profile-picture-container.editable { cursor: pointer; }
-.profile-picture { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; border: 2px solid #7c0e77; position: absolute; top: 0; left: 0; z-index: 1; }
+
+/* The actual image - initially may be hidden */
+.profile-picture {
+    display: none; /* Initially hidden, shown by JS if src is valid */
+    width: 100%; height: 100%;
+    object-fit: cover; /* Cover the round container */
+    position: absolute; top: 0; left: 0; z-index: 1;
+}
+
+/* NEW: Default message container */
+.pfp-default-message {
+    display: flex; /* Initially visible, hidden by JS if image exists */
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    justify-content: center; align-items: center;
+    background-color: #eee; color: #777;
+    font-size: 1.1em; font-weight: bold; text-align: center;
+    border: 2px dashed #ccc;
+    border-radius: 50%; /* Match container */
+    z-index: 0; /* Below overlay */
+    padding: 10px;
+}
+
+/* Edit mode overlay - shown on top */
 .profile-picture-overlay {
-  position: absolute; top: 0; left: 0; width: 100%; height: 100%; border-radius: 50%;
-  background-color: rgba(249, 249, 249, 0.7); color: #333; display: flex; justify-content: center;
-  align-items: center; font-weight: bold; opacity: 0; transition: opacity 0.2s ease-in-out;
-  z-index: 2; pointer-events: none;
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%; border-radius: 50%;
+    background-color: rgba(249, 249, 249, 0.7); color: #333; display: flex; justify-content: center;
+    align-items: center; font-weight: bold; opacity: 0; transition: opacity 0.2s ease-in-out;
+    z-index: 2; pointer-events: none;
 }
 .profile-picture-container.editable .profile-picture-overlay { opacity: 1; }
 .profile-picture-container.editable:hover .profile-picture-overlay { background-color: rgba(230, 230, 230, 0.8); }
 .profile-picture-container.dragover .profile-picture-overlay { opacity: 1; background-color: rgba(200, 200, 200, 0.8); color: #000; }
+
+/* Hidden file input */
 #profilePictureInput { display: none; }
+
 
 /* Subject Interest Styles (Keep Existing) */
 .subject-options { display: none; flex-wrap: wrap; gap: 5px; margin-bottom: 10px; padding: 10px; background-color: #e9e9e9; border-radius: 4px; }
 .subject-block { background-color: #5233ff; color: white; padding: 5px 10px; border-radius: 3px; cursor: grab; user-select: none; font-size: 0.9em; }
 .subject-block.dragging { opacity: 0.5; }
 .subject-interest-container.drag-over, .subject-options.drag-over { outline: 2px dashed #3a33ff; background-color: #f0f5ff; }
+.subject-interest-container.drag-over { background: #f0f5ff; }
 
 /* Modal Styles (Keep Existing) */
 #modalOverlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.6); z-index: 1000; }
-#pfpModal {
-  display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
-  background-color: #f9f9f9; padding: 25px 30px; border-radius: 8px; border: 1px solid #ccc;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2); z-index: 1001; min-width: 300px; text-align: center;
-}
-.modal-close {
-  position: absolute; top: 8px; right: 12px; font-size: 1.6rem; font-weight: bold;
-  color: #888; background: none; border: none; cursor: pointer; line-height: 1; padding: 0;
-}
+#pfpModal { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: #f9f9f9; padding: 25px 30px; border-radius: 8px; border: 1px solid #ccc; box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2); z-index: 1001; min-width: 300px; text-align: center; }
+.modal-close { position: absolute; top: 8px; right: 12px; font-size: 1.6rem; font-weight: bold; color: #888; background: none; border: none; cursor: pointer; line-height: 1; padding: 0; }
 .modal-close:hover { color: #333; }
 #modalTitle { font-size: 1.3em; font-weight: bold; margin-bottom: 15px; color: rgb(19, 6, 118); }
 #modalMessage { font-size: 0.9em; color: #555; min-height: 20px; margin-bottom: 20px; }
 .modal-buttons { display: flex; justify-content: center; gap: 15px; }
-.modal-button {
-  background-color: #5233ff; color: white; padding: 10px 20px; border-radius: 4px;
-  border: none; font-size: 1em; font-family: inherit; cursor: pointer;
-  transition: background-color 0.2s ease-in-out;
-}
+.modal-button { background-color: #5233ff; color: white; padding: 10px 20px; border-radius: 4px; border: none; font-size: 1em; font-family: inherit; cursor: pointer; transition: background-color 0.2s ease-in-out; }
 .modal-button:hover { background-color: #4128cc; }
+
+/* ===== Responsive Layout ===== */
+@media (max-width: 900px) {
+  #main-content-area { flex-direction: column; align-items: stretch; }
+  .profile-container, #tabbed-widgets { flex: none; width: 100%; max-width: none; margin-bottom: 20px; }
+  #tabbed-widgets { margin-bottom: 0; }
+  h1 { font-size: 1.8em; }
+  .widget-tab-button { font-size: 0.85em; padding: 8px 10px; }
+  .calendar-day { font-size: 0.8em; min-height: 25px; padding: 3px 0; }
+  .calendar-nav-button { font-size: 1.3em; }
+  .calendar-header { font-size: 1em; }
+  .pfp-default-message { font-size: 1em; } /* Adjust default msg size */
+}
+
 </style>
 </head>
 <body>
@@ -173,56 +240,100 @@ a:hover { text-decoration: underline; }
     <span>Profile</span>
     <div class="header-buttons">
       <a href="https://kathy20316.github.io/EducationOrder/" id="homeButton">Home</a>
-      <button id="editButton">Edit Profile</button> <!-- This button will toggle -->
+      <button id="editButton">Edit Profile</button>
     </div>
   </h1>
 
-  <div class="profile-container">
-    <div class="profile-picture-container">
-      <img src="smartypants.jpg" alt="Profile Picture" class="profile-picture" id="profilePicture">
-      <div class="profile-picture-overlay"></div>
-    </div>
-    <input type="file" id="profilePictureInput" accept="image/*">
+  <!-- Main Content Area (2 Columns) -->
+  <div id="main-content-area">
 
-    <div class="input-group">
-      <label for="username">Username:</label>
-      <input type="text" id="username" name="username" value="YourUsername" disabled>
-    </div>
-    <div class="input-group">
-      <label for="description">Description:</label>
-      <textarea id="description" name="description" disabled>Write something about yourself...</textarea>
-    </div>
-    <div class="input-group">
-      <label class="subject-interest-label">Subject Interests (Drag & Drop)</label>
-      <div class="subject-options" id="subjectOptions">
-         <!-- Subject options -->
-        <div class="subject-block" draggable="true" data-subject="Mathematics">Mathematics</div>
-        <div class="subject-block" draggable="true" data-subject="Science">Science</div>
-        <div class="subject-block" draggable="true" data-subject="History">History</div>
-        <div class="subject-block" draggable="true" data-subject="Literature">Literature</div>
-        <div class="subject-block" draggable="true" data-subject="Computer Science">Computer Science</div>
-        <div class="subject-block" draggable="true" data-subject="Art">Art</div>
-        <div class="subject-block" draggable="true" data-subject="Music">Music</div>
-        <div class="subject-block" draggable="true" data-subject="Economics">Economics</div>
-        <div class="subject-block" draggable="true" data-subject="Philosophy">Philosophy</div>
-        <div class="subject-block" draggable="true" data-subject="Psychology">Psychology</div>
-        <div class="subject-block" draggable="true" data-subject="Sociology">Sociology</div>
-        <div class="subject-block" draggable="true" data-subject="Political Science">Political Science</div>
-        <div class="subject-block" draggable="true" data-subject="Engineering">Engineering</div>
-        <div class="subject-block" draggable="true" data-subject="Medicine">Medicine</div>
-        <div class="subject-block" draggable="true" data-subject="Law">Law</div>
+    <!-- Profile Container (LEFT) -->
+    <div class="profile-container">
+        <!-- Profile Picture Area -->
+      <div class="profile-picture-container">
+        <!-- Image is initially hidden via CSS unless src is set -->
+        <img src="" alt="Profile Picture" class="profile-picture" id="profilePicture">
+         <!-- Default Message -->
+        <div class="pfp-default-message" id="pfpDefaultMessage">Add PFP</div>
+        <!-- Edit Overlay (initially hidden) -->
+        <div class="profile-picture-overlay"></div>
       </div>
-      <div class="subject-interest-container" id="subjectInterestContainer">
-        <!-- Subject blocks will appear here when dragged -->
+      <input type="file" id="profilePictureInput" accept="image/*">
+
+      <!-- Rest of profile inputs -->
+      <div class="input-group">
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" value="YourUsername" disabled>
+      </div>
+      <div class="input-group">
+        <label for="description">Description:</label>
+        <textarea id="description" name="description" disabled>Write something about yourself...</textarea>
+      </div>
+      <div class="input-group">
+        <label class="subject-interest-label">Subject Interests (Drag & Drop)</label>
+        <div class="subject-options" id="subjectOptions">
+           <!-- Subject options -->
+          <div class="subject-block" draggable="true" data-subject="Mathematics">Mathematics</div>
+          <div class="subject-block" draggable="true" data-subject="Science">Science</div>
+          <div class="subject-block" draggable="true" data-subject="History">History</div>
+          <div class="subject-block" draggable="true" data-subject="Literature">Literature</div>
+          <div class="subject-block" draggable="true" data-subject="Computer Science">Computer Science</div>
+          <div class="subject-block" draggable="true" data-subject="Art">Art</div>
+          <div class="subject-block" draggable="true" data-subject="Music">Music</div>
+          <div class="subject-block" draggable="true" data-subject="Economics">Economics</div>
+          <div class="subject-block" draggable="true" data-subject="Philosophy">Philosophy</div>
+          <div class="subject-block" draggable="true" data-subject="Psychology">Psychology</div>
+          <div class="subject-block" draggable="true" data-subject="Sociology">Sociology</div>
+          <div class="subject-block" draggable="true" data-subject="Political Science">Political Science</div>
+          <div class="subject-block" draggable="true" data-subject="Engineering">Engineering</div>
+          <div class="subject-block" draggable="true" data-subject="Medicine">Medicine</div>
+          <div class="subject-block" draggable="true" data-subject="Law">Law</div>
+        </div>
+        <div class="subject-interest-container" id="subjectInterestContainer">
+          <!-- Subject blocks will appear here when dragged -->
+        </div>
       </div>
     </div>
 
-    <!-- REMOVED the separate save button -->
-    <!-- <button id="saveButton" style="display: none;">Save Changes</button> -->
+    <!-- Tabbed Widgets Container (RIGHT) -->
+    <div id="tabbed-widgets">
+      <div class="widget-tab-nav" role="tablist" aria-label="Information Widgets">
+        <button class="widget-tab-button active" role="tab" aria-selected="true" aria-controls="calendar-content" data-tab-target="#calendar-content">Planner</button>
+        <button class="widget-tab-button" role="tab" aria-selected="false" aria-controls="instructors-content" data-tab-target="#instructors-content">Instructors</button>
+        <button class="widget-tab-button" role="tab" aria-selected="false" aria-controls="messages-content" data-tab-target="#messages-content">Messages</button>
+        <button class="widget-tab-button" role="tab" aria-selected="false" aria-controls="friends-content" data-tab-target="#friends-content">Friends</button>
+      </div>
 
-  </div>
+      <div class="widget-tab-content-area">
+        <div class="widget-tab-content active" id="calendar-content" role="tabpanel" aria-labelledby="calendar-tab-button">
+          <div class="calendar-widget">
+            <div class="calendar-header">
+              <button id="prev-month-btn" class="calendar-nav-button" aria-label="Previous month">‹</button>
+              <span id="calendar-month-year">Month Year</span>
+              <button id="next-month-btn" class="calendar-nav-button" aria-label="Next month">›</button>
+            </div>
+            <div class="calendar-weekdays" id="calendar-weekdays-container"></div>
+            <div class="calendar-days" id="calendar-days-grid"></div>
+          </div>
+        </div>
 
-  <!-- PFP Modal Section (Keep as is) -->
+        <div class="widget-tab-content" id="instructors-content" role="tabpanel" aria-labelledby="instructors-tab-button">
+          <ul><li>Dr. Abdulhak</li></ul>
+        </div>
+
+        <div class="widget-tab-content" id="messages-content" role="tabpanel" aria-labelledby="messages-tab-button">
+          <ul><li><span style="color: red; font-weight: bold;">ALERT:</span> SUPER BIG PROJECT MAY 2!</li><li>Message from Dr. Abdulhuk: Prepare thoroughly and ensure your system is ready for a smooth demonstration. Let’s make this a successful session!</li><li>Site Announcement: Scheduled Maintenance May 3</li></ul>
+        </div>
+
+        <div class="widget-tab-content" id="friends-content" role="tabpanel" aria-labelledby="friends-tab-button">
+           <ul><li>Patrick</li><li>BubbleBuddy</li><li>Squidward</li><li>MrKrabs</li><li>Sandy</li></ul>
+        </div>
+      </div>
+    </div>
+
+  </div> <!-- End Main Content Area -->
+
+  <!-- PFP Modal Section (Keep outside main content area) -->
   <div id="modalOverlay"></div>
   <div id="pfpModal">
     <button class="modal-close" id="modalCloseButton" aria-label="Close modal">×</button>
@@ -234,209 +345,181 @@ a:hover { text-decoration: underline; }
     </div>
   </div>
 
-</div>
+</div> <!-- End Root -->
 
 <script>
-  // script.js
+// script.js - Changed initial PFP state
 
 // --- Global State Variables ---
 let isEditing = false;
-let savedInterests = ["Mathematics", "Computer Science"]; // Example starting interests
+let savedInterests = ["Mathematics", "Computer Science"];
+let currentDisplayYear = new Date().getFullYear();
+let currentDisplayMonth = new Date().getMonth();
+let calendarNotes = {
+    "2024-05-02": "Sprint 5 Code review due",
+    "2024-05-15": "Midterm Presentation",
+    "2024-04-30": "Meeting with Prof. Vance"
+};
+// --- NEW: Store the intended image source (null if none) ---
+let currentPfpSrc = null; // Or load from localStorage/server
 
-// --- DOM Element References (assigned in initializeProfile) ---
-let editButton, // Only one button now
-    usernameInput, descriptionTextarea,
+
+// --- DOM Element References ---
+let editButton, usernameInput, descriptionTextarea,
     profilePicture, profilePictureInput, profilePictureContainer,
-    profilePictureOverlay, subjectOptions, subjectInterestContainer,
-    // Modal Element References
+    profilePictureOverlay, pfpDefaultMessage, // Added pfpDefaultMessage
+    subjectOptions, subjectInterestContainer,
     modalOverlay, pfpModal, modalCloseButton, modalChooseFileButton,
     modalDragDropButton, modalMessage;
+// Tab Widgets
+let tabNavContainer, tabButtons, tabContentPanels;
+// Calendar Elements
+let calendarMonthYear, calendarWeekdaysContainer, calendarDaysGrid,
+    prevMonthBtn, nextMonthBtn;
+
 
 // --- Core Functions ---
-
-// Function to enable editing mode
 function enableEditing() {
     console.log("Entering Edit Mode");
     isEditing = true;
     usernameInput.disabled = false;
     descriptionTextarea.disabled = false;
     subjectOptions.style.display = 'flex';
+    // Update overlay, but don't change base visibility (img vs default msg)
+    resetPfpOverlayState();
+    // Make container clickable
+    profilePictureContainer.classList.add('editable');
+    profilePictureContainer.addEventListener('click', openPfpModal);
 
+    // Other edit mode changes
     usernameInput.style.borderColor = "#ccc";
     descriptionTextarea.style.borderColor = "#ccc";
-
     editButton.textContent = 'Save Changes';
     editButton.removeEventListener('click', enableEditing);
     editButton.addEventListener('click', saveChanges);
-
-    profilePictureContainer.addEventListener('click', openPfpModal);
-    profilePictureContainer.classList.add('editable');
-    resetPfpOverlayState();
-
     enableSubjectDragging();
 }
 
-// Function to save changes
 function saveChanges() {
     console.log("Attempting Save...");
-    profilePictureContainer.removeEventListener('click', openPfpModal); // Remove listener
+    profilePictureContainer.removeEventListener('click', openPfpModal);
+    profilePictureContainer.classList.remove('editable');
 
     const username = usernameInput.value;
     const description = descriptionTextarea.value;
     let isValid = true;
     let errorMessages = [];
-
-    // === Validation Logic ===
     if (!isValidUsername(username)) {
-        console.log("Validation Failed: Username");
-        isValid = false;
-        errorMessages.push("Username should not contain special characters or spaces.");
-        usernameInput.style.borderColor = "red";
-    } else {
-        usernameInput.style.borderColor = "#ccc";
-    }
+        isValid = false; errorMessages.push("Username should not contain special characters or spaces."); usernameInput.style.borderColor = "red";
+    } else { usernameInput.style.borderColor = "#ccc"; }
     const currentWordCount = wordCount(description);
     if (currentWordCount > 75) {
-        console.log("Validation Failed: Description Word Count", currentWordCount);
-        isValid = false;
-        errorMessages.push(`Description has ${currentWordCount} words (max 75).`);
-        descriptionTextarea.style.borderColor = "red";
-    } else {
-        descriptionTextarea.style.borderColor = "#ccc";
-    }
-    // === End Validation ===
-
+        isValid = false; errorMessages.push(`Description has ${currentWordCount} words (max 75).`); descriptionTextarea.style.borderColor = "red";
+    } else { descriptionTextarea.style.borderColor = "#ccc"; }
     if (!isValid) {
         console.log("Validation Failed. Errors:", errorMessages);
         alert("Please fix the following errors:\n- " + errorMessages.join("\n- "));
-        profilePictureContainer.addEventListener('click', openPfpModal); // Re-add listener
-        return; // Stop the save process
+        // Re-enable editing state for correction
+        profilePictureContainer.addEventListener('click', openPfpModal);
+        profilePictureContainer.classList.add('editable');
+        return;
     }
-
-    // --- Validation Passed - Proceed with Saving ---
     console.log("Validation Passed. Saving...");
     isEditing = false;
-
-    usernameInput.disabled = true;
-    descriptionTextarea.disabled = true;
-    subjectOptions.style.display = 'none';
-    usernameInput.style.borderColor = "#ccc";
-    descriptionTextarea.style.borderColor = "#ccc";
-
+    usernameInput.disabled = true; descriptionTextarea.disabled = true; subjectOptions.style.display = 'none';
+    usernameInput.style.borderColor = "#ccc"; descriptionTextarea.style.borderColor = "#ccc";
     editButton.textContent = 'Edit Profile';
-    editButton.removeEventListener('click', saveChanges);
-    editButton.addEventListener('click', enableEditing);
+    editButton.removeEventListener('click', saveChanges); editButton.addEventListener('click', enableEditing);
 
-    profilePictureContainer.classList.remove('editable');
-    resetPfpOverlayState();
+    // Save the current profile picture source
+    currentPfpSrc = profilePicture.src.includes('data:image') || profilePicture.src ? profilePicture.src : null;
+    // Simulate saving: In a real app, save currentPfpSrc and other data here
+    console.log("Simulating save of PFP src:", currentPfpSrc ? currentPfpSrc.substring(0, 50) + '...' : 'null');
+
+    resetPfpOverlayState(); // Hide overlay
+    // Visibility is handled by updatePfpVisibility which doesn't need explicit call here
+    // unless currentPfpSrc might have become null during save (e.g., delete option)
+    updatePfpVisibility(); // Ensure correct display after save
 
     savedInterests = Array.from(subjectInterestContainer.children).map(item => item.dataset.subject);
     disableSubjectDragging();
-
     console.log("Saving data:", { username, description, interests: savedInterests });
     alert('Changes saved!');
     console.log("Save Complete. Exited Edit Mode.");
 }
 
-
-// --- Helper & Validation Functions ---
+// --- Helper & Validation Functions (Keep Existing) ---
 function wordCount(str) { if (!str || typeof str !== 'string' || str.trim() === "") return 0; const matches = str.match(/\S+/g); return matches ? matches.length : 0; }
 function isValidUsername(username) { if (!username || typeof username !== 'string') return false; const invalid = /[!@#$%^&*()+\-=\[\]{};':"\\|,.<>\/?\s]/; return !invalid.test(username); }
+function formatDateKey(year, month, day) { return `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`; }
 
-
-// --- Profile Picture Modal Functions ---
+// --- Profile Picture Modal Functions (Keep Existing) ---
 function openPfpModal() { if (!isEditing) return; console.log("Opening PFP Modal"); modalMessage.textContent = 'How would you like to add a picture?'; modalOverlay.style.display = 'block'; pfpModal.style.display = 'block'; }
 function closePfpModal() { console.log("Closing PFP Modal"); modalOverlay.style.display = 'none'; pfpModal.style.display = 'none'; }
 function handleModalChooseFile() { console.log("Modal: Choose File selected"); triggerFileInput(); closePfpModal(); }
-function handleModalDragDrop() { console.log("Modal: Drag & Drop selected"); modalMessage.textContent = 'Close this window and drag your image onto the picture area.'; /* closePfpModal(); // Optional: close immediately */ }
+function handleModalDragDrop() { console.log("Modal: Drag & Drop selected"); modalMessage.textContent = 'Close this window and drag your image onto the picture area.'; }
 
 // --- Profile Picture Core Logic ---
+
+// NEW: Controls visibility of image vs default message
+function updatePfpVisibility() {
+    // Check if the img tag has a valid source (not empty, not just the base URL)
+    const hasValidSrc = profilePicture.src && profilePicture.src !== window.location.href && !profilePicture.src.endsWith('/');
+    console.log("Updating PFP Visibility. Has valid src:", hasValidSrc, "Src:", profilePicture.src ? profilePicture.src.substring(0,30)+'...' : 'null');
+
+    if (hasValidSrc) {
+        profilePicture.style.display = 'block'; // Show image
+        pfpDefaultMessage.style.display = 'none'; // Hide default message
+    } else {
+        profilePicture.style.display = 'none'; // Hide image
+        pfpDefaultMessage.style.display = 'flex'; // Show default message
+    }
+}
+
+// Updated: Handles only the overlay content/visibility based on edit mode
 function resetPfpOverlayState() {
-    profilePictureOverlay.innerHTML = '';
+    profilePictureOverlay.innerHTML = ''; // Clear previous content
     if (isEditing) {
         console.log("Resetting PFP Overlay for Edit Mode");
         const textElement = document.createElement('span');
-        textElement.textContent = 'Click to Change';
+        textElement.textContent = 'Click or Drag';
         profilePictureOverlay.appendChild(textElement);
+        // Ensure overlay itself is potentially visible (CSS handles opacity)
     } else {
-        console.log("Resetting PFP Overlay for View Mode");
-        const hasRealImage = profilePicture.src && !profilePicture.src.includes('placeholder-pfp.jpg') && profilePicture.naturalWidth > 0;
-        if (!hasRealImage && (!profilePicture.src || profilePicture.src.includes('placeholder-pfp.jpg'))) {
-             profilePicture.src = 'placeholder-pfp.jpg';
-        }
+        console.log("Resetting PFP Overlay for View Mode - Overlay hidden");
+        // Overlay is hidden by default via CSS opacity unless .editable is present
     }
+    // Visibility of img vs default message is handled by updatePfpVisibility()
 }
+
 function triggerFileInput() { console.log("Triggering file input click"); profilePictureInput.click(); }
+
 function handleFile(file) {
-    // Basic check at the start
-    if (!file || !file.type.startsWith('image/')) {
-        console.warn("handleFile: Invalid file type or no file.", file);
-        alert("Please select/drop a valid image file (e.g., JPG, PNG, GIF).");
-        closePfpModal();
-        return;
-    }
+    if (!file || !file.type.startsWith('image/')) { console.warn("handleFile: Invalid file type or no file.", file); alert("Please select/drop a valid image file (e.g., JPG, PNG, GIF)."); closePfpModal(); return; }
     console.log("Handling valid file:", file.name);
     const reader = new FileReader();
     reader.onload = (e) => {
         console.log("File read successfully");
-        profilePicture.src = e.target.result;
+        profilePicture.src = e.target.result; // Set the image source
         closePfpModal();
+        updatePfpVisibility(); // <-- NEW: Update visibility after setting src
+        // resetPfpOverlayState(); // Not needed here, overlay state depends on isEditing
     };
-    reader.onerror = () => {
-        console.error("Error reading file.");
-        alert("Error reading file. Please try again.");
-        closePfpModal();
-    };
+    reader.onerror = () => { console.error("Error reading file."); alert("Error reading file. Please try again."); closePfpModal(); };
     reader.readAsDataURL(file);
 }
-function handleImageUpload(event) {
-    const file = event.target.files[0];
-    console.log("File input changed. File selected:", file ? file.name : 'None (Cancelled)');
-    if (file) { handleFile(file); }
-    event.target.value = null;
-}
 
-// --- Profile Picture Drag/Drop Handlers (CORRECTED) ---
-function handlePfpDragOver(e) {
-    // MUST prevent default to allow drop
-    e.preventDefault();
-    if (!isEditing) return; // Check editing status AFTER preventDefault
-    console.log("Drag Over PFP container"); // Log activity
-    e.dataTransfer.dropEffect = 'copy'; // Visual feedback
-    profilePictureContainer.classList.add('dragover');
-}
+function handleImageUpload(event) { const file = event.target.files[0]; console.log("File input changed. File selected:", file ? file.name : 'None (Cancelled)'); if (file) { handleFile(file); } event.target.value = null; }
 
-function handlePfpDragLeave(e) {
-    // No preventDefault needed here
-    if (!isEditing) return;
-    // Check if leaving to outside the container vs. a child element
-    if (e.relatedTarget && profilePictureContainer.contains(e.relatedTarget)) {
-        return;
-    }
-    console.log("Drag Leave PFP container"); // Log activity
-    profilePictureContainer.classList.remove('dragover');
-}
-
-function handlePfpDrop(e) {
-    // MUST prevent default to stop browser opening file
-    e.preventDefault();
-    if (!isEditing) return; // Check editing status AFTER preventDefault
-    console.log("File dropped on PFP container"); // Log activity
-    profilePictureContainer.classList.remove('dragover'); // Clean up style
-
-    const file = e.dataTransfer.files[0]; // Get the first dropped file
-
-    // Process the file using the existing handleFile function
-    handleFile(file); // handleFile now includes validation
-
-    closePfpModal(); // Ensure modal is closed after drop attempt
-}
-
+// --- Profile Picture Drag/Drop Handlers ---
+function handlePfpDragOver(e) { e.preventDefault(); if (!isEditing) return; e.dataTransfer.dropEffect = 'copy'; profilePictureContainer.classList.add('dragover'); }
+function handlePfpDragLeave(e) { if (!isEditing) return; if (e.relatedTarget && profilePictureContainer.contains(e.relatedTarget)) return; profilePictureContainer.classList.remove('dragover'); }
+function handlePfpDrop(e) { e.preventDefault(); if (!isEditing) return; profilePictureContainer.classList.remove('dragover'); const file = e.dataTransfer.files[0]; handleFile(file); closePfpModal(); }
 
 // --- Subject Interest Drag/Drop Functions (Keep Existing) ---
-let draggedSubject = null;
-function enableSubjectDragging() { const blocks = document.querySelectorAll('#subjectOptions .subject-block, #subjectInterestContainer .subject-block'); blocks.forEach(b => { b.draggable = true; b.addEventListener('dragstart', dragStart); b.addEventListener('dragend', dragEnd); }); [subjectInterestContainer, subjectOptions].forEach(c => { c.addEventListener('dragover', dragOver); c.addEventListener('dragenter', dragEnter); c.addEventListener('dragleave', dragLeave); }); subjectInterestContainer.addEventListener('drop', dropOnInterestContainer); subjectOptions.addEventListener('drop', dropOnOptionsContainer); }
-function disableSubjectDragging() { const blocks = document.querySelectorAll('#subjectOptions .subject-block, #subjectInterestContainer .subject-block'); blocks.forEach(b => { b.draggable = false; b.removeEventListener('dragstart', dragStart); b.removeEventListener('dragend', dragEnd); }); [subjectInterestContainer, subjectOptions].forEach(c => { c.removeEventListener('dragover', dragOver); c.removeEventListener('dragenter', dragEnter); c.removeEventListener('dragleave', dragLeave); c.classList.remove('drag-over'); }); subjectInterestContainer.removeEventListener('drop', dropOnInterestContainer); subjectOptions.removeEventListener('drop', dropOnOptionsContainer); }
+draggedSubject = null;
+function enableSubjectDragging() { const blocks = document.querySelectorAll('#subjectOptions .subject-block, #subjectInterestContainer .subject-block'); blocks.forEach(b => { b.draggable = true; b.addEventListener('dragstart', dragStart); b.addEventListener('dragend', dragEnd); }); [subjectInterestContainer, subjectOptions].forEach(c => { c.addEventListener('dragover', dragOver); c.addEventListener('dragenter', dragEnter); c.addEventListener('dragleave', dragLeave); }); subjectInterestContainer.addEventListener('drop', dropOnInterestContainer); subjectOptions.addEventListener('drop', dropOnOptionsContainer); console.log("Subject dragging ENABLED");}
+function disableSubjectDragging() { const blocks = document.querySelectorAll('#subjectOptions .subject-block, #subjectInterestContainer .subject-block'); blocks.forEach(b => { b.draggable = false; b.removeEventListener('dragstart', dragStart); b.removeEventListener('dragend', dragEnd); }); [subjectInterestContainer, subjectOptions].forEach(c => { c.removeEventListener('dragover', dragOver); c.removeEventListener('dragenter', dragEnter); c.removeEventListener('dragleave', dragLeave); c.classList.remove('drag-over'); }); subjectInterestContainer.removeEventListener('drop', dropOnInterestContainer); subjectOptions.removeEventListener('drop', dropOnOptionsContainer); console.log("Subject dragging DISABLED");}
 function dragStart(event) { if (!event.target.classList.contains('subject-block')) return; draggedSubject = event.target; event.dataTransfer.setData('text/plain', event.target.dataset.subject); event.dataTransfer.effectAllowed = 'move'; setTimeout(() => { if (draggedSubject) draggedSubject.classList.add('dragging'); }, 0); }
 function dragEnd(event) { setTimeout(() => { const currentDragged = document.querySelector('.subject-block.dragging'); if (currentDragged) currentDragged.classList.remove('dragging'); subjectInterestContainer.classList.remove('drag-over'); subjectOptions.classList.remove('drag-over'); draggedSubject = null; }, 0); }
 function dragOver(event) { event.preventDefault(); event.dataTransfer.dropEffect = 'move'; }
@@ -445,23 +528,64 @@ function dragLeave(event) { const targetContainer = event.target.closest('.subje
 function dropOnInterestContainer(event) { event.preventDefault(); const targetContainer = event.target.closest('.subject-interest-container'); if (targetContainer && draggedSubject && !targetContainer.contains(draggedSubject)) targetContainer.appendChild(draggedSubject); targetContainer?.classList.remove('drag-over'); }
 function dropOnOptionsContainer(event) { event.preventDefault(); const targetContainer = event.target.closest('.subject-options'); if (targetContainer && draggedSubject && !targetContainer.contains(draggedSubject)) { targetContainer.appendChild(draggedSubject); sortSubjectOptions(); } targetContainer?.classList.remove('drag-over'); }
 function sortSubjectOptions() { if (!subjectOptions) return; const options = Array.from(subjectOptions.children); options.sort((a, b) => a.dataset.subject.localeCompare(b.dataset.subject)); options.forEach(option => subjectOptions.appendChild(option)); }
-// ------------------------------------------------------
+
+// --- Tab Switching Functionality (Keep Existing) ---
+function handleTabClick(event) {
+    const clickedButton = event.target.closest('.widget-tab-button');
+    if (!clickedButton) return; const targetPanelId = clickedButton.dataset.tabTarget; if (!targetPanelId) return;
+    tabButtons.forEach(button => { button.classList.remove('active'); button.setAttribute('aria-selected', 'false'); });
+    tabContentPanels.forEach(panel => { panel.classList.remove('active'); });
+    clickedButton.classList.add('active'); clickedButton.setAttribute('aria-selected', 'true');
+    const targetPanel = document.querySelector(targetPanelId);
+    if (targetPanel) { targetPanel.classList.add('active'); } else { console.warn("Target tab panel not found:", targetPanelId); }
+}
+
+// --- Calendar Interaction Functions (Keep Existing) ---
+function handleDayClick(event) {
+    const dayCell = event.currentTarget; const dateKey = dayCell.dataset.date; if (!dateKey) return;
+    const existingNote = calendarNotes[dateKey] || "";
+    const dateParts = dateKey.split('-'); const formattedDate = `${dateParts[1]}/${dateParts[2]}/${dateParts[0]}`;
+    const note = prompt(`Enter note for ${formattedDate}:`, existingNote);
+    if (note !== null) {
+        if (note.trim()) { calendarNotes[dateKey] = note.trim(); console.log(`Note saved for ${dateKey}: "${calendarNotes[dateKey]}"`); }
+        else { delete calendarNotes[dateKey]; console.log(`Note removed for ${dateKey}`); }
+        generateCalendar(currentDisplayYear, currentDisplayMonth); // Regenerate to update note indicator
+    }
+}
+function generateCalendar(year, month) {
+    if (!calendarMonthYear || !calendarDaysGrid || !calendarWeekdaysContainer) { console.error("Calendar elements not found."); return; }
+    const now = new Date(); const currentActualDay = now.getDate(); const currentActualMonth = now.getMonth(); const currentActualYear = now.getFullYear();
+    const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+    calendarMonthYear.textContent = `${monthNames[month]} ${year}`;
+    const firstDayOfMonth = new Date(year, month, 1).getDay(); const daysInMonth = new Date(year, month + 1, 0).getDate();
+    calendarDaysGrid.innerHTML = '';
+    if (calendarWeekdaysContainer.children.length === 0) { const weekdays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']; weekdays.forEach(day => { const dayElement = document.createElement('div'); dayElement.textContent = day; calendarWeekdaysContainer.appendChild(dayElement); }); }
+    for (let i = 0; i < firstDayOfMonth; i++) { const emptyCell = document.createElement('div'); emptyCell.classList.add('calendar-day', 'empty'); calendarDaysGrid.appendChild(emptyCell); }
+    for (let day = 1; day <= daysInMonth; day++) {
+        const dayCell = document.createElement('div'); dayCell.classList.add('calendar-day'); dayCell.textContent = day;
+        const dateKey = formatDateKey(year, month, day); dayCell.dataset.date = dateKey;
+        if (day === currentActualDay && month === currentActualMonth && year === currentActualYear) { dayCell.classList.add('today'); }
+        if (calendarNotes[dateKey]) { dayCell.classList.add('has-note'); dayCell.setAttribute('title', calendarNotes[dateKey]); }
+        dayCell.addEventListener('click', handleDayClick);
+        calendarDaysGrid.appendChild(dayCell);
+    }
+    console.log(`Calendar generated for ${monthNames[month]} ${year}`);
+}
 
 
 // --- Initialization ---
 function initializeProfile() {
     // Assign Standard DOM Element References
     editButton = document.getElementById('editButton');
-    usernameInput = document.getElementById('username');
-    descriptionTextarea = document.getElementById('description');
     profilePicture = document.getElementById('profilePicture');
     profilePictureInput = document.getElementById('profilePictureInput');
     profilePictureContainer = document.querySelector('.profile-picture-container');
     profilePictureOverlay = document.querySelector('.profile-picture-overlay');
+    pfpDefaultMessage = document.getElementById('pfpDefaultMessage'); // <-- NEW
+    usernameInput = document.getElementById('username');
+    descriptionTextarea = document.getElementById('description');
     subjectOptions = document.getElementById('subjectOptions');
     subjectInterestContainer = document.getElementById('subjectInterestContainer');
-
-    // Assign Modal DOM Element References
     modalOverlay = document.getElementById('modalOverlay');
     pfpModal = document.getElementById('pfpModal');
     modalCloseButton = document.getElementById('modalCloseButton');
@@ -469,11 +593,36 @@ function initializeProfile() {
     modalDragDropButton = document.getElementById('modalDragDropButton');
     modalMessage = document.getElementById('modalMessage');
 
+    // Assign Tab Widget References
+    tabNavContainer = document.querySelector('.widget-tab-nav');
+    tabButtons = document.querySelectorAll('.widget-tab-button');
+    tabContentPanels = document.querySelectorAll('.widget-tab-content');
+
+    // Assign Calendar References
+    calendarMonthYear = document.getElementById('calendar-month-year');
+    calendarWeekdaysContainer = document.getElementById('calendar-weekdays-container');
+    calendarDaysGrid = document.getElementById('calendar-days-grid');
+    prevMonthBtn = document.getElementById('prev-month-btn');
+    nextMonthBtn = document.getElementById('next-month-btn');
+
     // Basic check for essential elements
-    if (!editButton || !profilePictureContainer || !pfpModal || !modalOverlay || !subjectOptions || !subjectInterestContainer ||!usernameInput || !descriptionTextarea || !profilePicture || !profilePictureInput || !modalCloseButton || !modalChooseFileButton || !modalDragDropButton || !modalMessage ) {
+    if (!editButton || !profilePictureContainer || !pfpModal /* ... */ || !pfpDefaultMessage || !tabNavContainer || tabButtons.length === 0 || !calendarMonthYear || !calendarWeekdaysContainer || !calendarDaysGrid || !prevMonthBtn || !nextMonthBtn) {
          console.error("Initialization failed: Essential DOM elements missing. Check IDs.");
-         return; // Stop initialization
+         !pfpDefaultMessage && console.error("Missing: #pfpDefaultMessage");
+         // ... add more specific checks if needed ...
+         return;
     }
+
+    // --- Load Initial State ---
+    // Simulate loading saved PFP source (replace with actual loading if needed)
+    // For demo, start with null unless you want a default user image
+    // profilePicture.src = currentPfpSrc || ""; // Load saved src or empty
+
+    // Initial setup
+    updatePfpVisibility(); // Set initial visibility of img/default msg
+    resetPfpOverlayState(); // Set initial overlay state (hidden in view mode)
+    disableSubjectDragging();
+    sortSubjectOptions();
 
     // Move pre-selected interests
     savedInterests.forEach(interest => {
@@ -481,23 +630,14 @@ function initializeProfile() {
         if (block) subjectInterestContainer.appendChild(block);
     });
 
-    resetPfpOverlayState();
-    disableSubjectDragging();
-    sortSubjectOptions();
-
-    // --- Setup Initial Event Listeners ---
-    editButton.textContent = 'Edit Profile'; // Set initial text
-    editButton.removeEventListener('click', saveChanges); // Clear potential stale listener
-    editButton.addEventListener('click', enableEditing); // Add edit listener
-
+    // --- Setup Event Listeners ---
+    editButton.addEventListener('click', enableEditing);
     profilePictureInput.addEventListener('change', handleImageUpload);
-
-    // === Add PFP Drag/Drop Listeners PERMANENTLY ===
-    // These need to be active so preventDefault works even before editing starts sometimes
-    // The isEditing check inside the handlers will prevent actions when not appropriate
+    // Drag/drop listeners on container (even when not editing for dragover)
     profilePictureContainer.addEventListener('dragover', handlePfpDragOver);
     profilePictureContainer.addEventListener('dragleave', handlePfpDragLeave);
     profilePictureContainer.addEventListener('drop', handlePfpDrop);
+    // Click listener is added/removed in enable/save functions
 
     // Modal Listeners
     modalCloseButton.addEventListener('click', closePfpModal);
@@ -505,11 +645,33 @@ function initializeProfile() {
     modalChooseFileButton.addEventListener('click', handleModalChooseFile);
     modalDragDropButton.addEventListener('click', handleModalDragDrop);
 
-    console.log("Profile Editor Initialized (Single Button - D&D Corrected)");
+    // Tab Navigation Listener
+    if (tabNavContainer) { tabNavContainer.addEventListener('click', handleTabClick); }
+
+    // Calendar Navigation Listeners
+    prevMonthBtn.addEventListener('click', () => {
+        currentDisplayMonth--;
+        if (currentDisplayMonth < 0) { currentDisplayMonth = 11; currentDisplayYear--; }
+        generateCalendar(currentDisplayYear, currentDisplayMonth);
+    });
+    nextMonthBtn.addEventListener('click', () => {
+        currentDisplayMonth++;
+        if (currentDisplayMonth > 11) { currentDisplayMonth = 0; currentDisplayYear++; }
+        generateCalendar(currentDisplayYear, currentDisplayMonth);
+    });
+
+    // Ensure initial tab state is correct
+    tabButtons.forEach(button => { if (button.classList.contains('active')) { button.setAttribute('aria-selected', 'true'); const targetPanelId = button.dataset.tabTarget; const targetPanel = document.querySelector(targetPanelId); if (targetPanel) targetPanel.classList.add('active'); } else { button.setAttribute('aria-selected', 'false'); } });
+
+    // Generate the calendar for the initial month
+    generateCalendar(currentDisplayYear, currentDisplayMonth);
+
+    console.log("Profile Editor Initialized (Default PFP Message)");
 }
 
 // --- Run Initialization ---
 document.addEventListener('DOMContentLoaded', initializeProfile);
+
 </script>
 </body>
 </html>
